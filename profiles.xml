@@ -4,8 +4,13 @@
              xsi:schemaLocation="http://maven.apache.org/PROFILES/1.0.0 http://maven.apache.org/xsd/profiles-1.0.0.xsd">
     <profiles>
         <profile>
-            <id>deploy-web</id>
-            
+            <id>gz-deploy-web</id>
+            <properties>
+                <clara.deploy.AppName>WMS3</clara.deploy.AppName>
+                <clara.deploy.ReleaseURL>http://gz.ao1.jd.com/winapp/</clara.deploy.ReleaseURL>
+                <clara.deploy.ApplicationStart>JD.WMSAO1.WPFAPP.exe</clara.deploy.ApplicationStart>
+                <clara.deploy.ShortcutIcon>null</clara.deploy.ShortcutIcon>
+            </properties>
         </profile>
     </profiles>
 </profilesXml>
