@@ -1,5 +1,10 @@
 package com.clara.deploy.service;
 
+
+import com.clara.deploy.domain.PropertiesHolder;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,10 +19,19 @@ import java.io.IOException;
  * To change this template use File | Settings | File Templates.
  */
 public class UploadService extends HttpServlet {
-
-
+    private ReleaseService releaseService;
     public void init() throws ServletException {
 
+    }
+
+    public void doPost(HttpServletRequest request,
+                       HttpServletResponse response)
+            throws ServletException, IOException {
+        ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-config.xml");
+        releaseService = ctx.getBean("releaseService",ReleaseService.class);
+        String s= PropertiesHolder.get("test");
+       // releaseService.build();
+        System.out.println(s);
     }
 
     public void doGet(HttpServletRequest request,
@@ -27,4 +41,8 @@ public class UploadService extends HttpServlet {
 
     }
 
+
+    public void setReleaseService(ReleaseService releaseService) {
+        this.releaseService = releaseService;
+    }
 }

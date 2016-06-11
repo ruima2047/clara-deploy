@@ -10,6 +10,7 @@
                 <clara.deploy.ReleaseURL>http://gz.ao1.jd.com/winapp/</clara.deploy.ReleaseURL>
                 <clara.deploy.ApplicationStart>JD.WMSAO1.WPFAPP.exe</clara.deploy.ApplicationStart>
                 <clara.deploy.ShortcutIcon>null</clara.deploy.ShortcutIcon>
+                <clara.deploy.ReleasePath>E:\\export\\JD.WMS3.Main\\JD.WMS3.Main.WFApp\\bin</clara.deploy.ReleasePath>
             </properties>
         </profile>
     </profiles>

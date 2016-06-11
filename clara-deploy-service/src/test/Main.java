@@ -20,9 +20,12 @@ public class Main {
 //        person1.hi();
 //        person2.hi();
 //    }
-public static void main(String []args) {
+    public static void main(String []args) {
+        Manager m = new Manager("ma");
+        Teacher t = new Teacher("z");
+        t.hi();
+        m.hi();
+        m.hello();
 
-    Manager m = new Manager("ma");
-    System.out.println(m.age);
     }
 }

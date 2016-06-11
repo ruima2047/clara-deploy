@@ -1,5 +1,7 @@
 package com.clara.deploy.service;
 
+import com.clara.deploy.domain.PropertiesHolder;
+
 /**
  * Created with IntelliJ IDEA.
  * User: marui5
@@ -10,8 +12,21 @@ package com.clara.deploy.service;
 public class test {
     public static void main(String []args) {
         ReleaseService releaseService = new ReleaseService();
-        //releaseService.generateFileList("E:\\A上线\\广州\\PC线上版本\\JD.WMS3.Main\\JD.WMS3.Main.WFApp\\bin\\0.4.1.8");
-        releaseService.generateReleaseList("1.0","更新内容:\n1.离线发票更新","E:\\A上线\\广州\\PC线上版本\\JD.WMS3.Main\\JD.WMS3.Main.WFApp\\bin\\Release");
-        System.out.println("hi");
+//        //releaseService.generateFileList("E:\\A上线\\广州\\PC线上版本\\JD.WMS3.Main\\JD.WMS3.Main.WFApp\\bin\\0.4.1.8");
+//        System.out.println("hi");
+//        String []s1 = "1|0|2".split("|");
+//        String []s2 = "1.0.2".split(".");
+//        System.out.println(releaseService.updateVersionNumNew("1.0.2"));
+//        System.out.println(releaseService.updateVersionNumNew("1.0.9"));
+//        System.out.println(releaseService.updateVersionNumNew("1.9.9"));
+//        System.out.println(releaseService.updateVersionNumNew("9.9.9"));
+//        System.out.println(releaseService.updateVersionNumNew("1.0.5.2"));
+//        System.out.println(releaseService.updateVersionNumNew("9.9.9.9"));
+        try {
+            String s= PropertiesHolder.get("test");
+            System.out.println(s);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
