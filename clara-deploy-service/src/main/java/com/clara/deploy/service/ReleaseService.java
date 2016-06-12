@@ -1,7 +1,6 @@
 package com.clara.deploy.service;
 
 import com.clara.deploy.domain.BaseInfo;
-import com.clara.deploy.domain.PropertiesHolder;
 import com.clara.deploy.domain.ReleaseFileInfo;
 import net.lingala.zip4j.model.ZipParameters;
 import net.lingala.zip4j.core.ZipFile;
@@ -36,23 +35,54 @@ public class ReleaseService {
     private BaseInfo baseInfo;
     private List<ReleaseFileInfo> releaseFileInfoList;
     private SimpleDateFormat simpleDateFormat;
-    private File releaseFile;
-    private File versionFile;
     private String versionFilePath;
+    private String updateLogPath;
 
     public Boolean build () {
-        try {
-            String s= PropertiesHolder.get("test");
+//        try {
             ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-config.xml");
             baseInfo = ctx.getBean("baseInfo",BaseInfo.class);
 
             //initialize settings
             releaseFileInfoList = new ArrayList<ReleaseFileInfo>();
             simpleDateFormat = new SimpleDateFormat("yyyy/M/d H:mm:ss");
-            releaseFile = new File(baseInfo.getReleasePath()+"\\Release");
-            versionFilePath = baseInfo.getReleasePath()+"\\"+baseInfo.getMinVersion();
+            File releaseFile = new File(baseInfo.getReleasePath()+"\\Release");
+            updateLogPath = baseInfo.getReleasePath()+"\\"+"updateLog";
+
+            //get the new version number and update description
+            File updateLogFile = new File(updateLogPath);
+            if(!updateLogFile.exists()) {
+                throw new RuntimeException("读取日志文件失败");
+            }
+            BufferedReader bufferedReader = null;
+            String newVersionNum = "";
+            String updateLog = "";
+            try {
+                bufferedReader = new BufferedReader(new FileReader(updateLogFile));
+                String lineTxt = null;
+                int i = 1;
+                if((lineTxt = bufferedReader.readLine()) == null) {
+                    throw new RuntimeException("获取版本号失败");
+                }
+                newVersionNum = lineTxt;
+                while((lineTxt = bufferedReader.readLine()) != null) {
+                    updateLog += Integer.toString(i)+". "+lineTxt+"\n";
+                    i++;
+                }
+            } catch (Exception e) {
+
+            } finally {
+                if (bufferedReader != null) {
+                    try {
+                        bufferedReader.close();
+                    } catch (IOException e1) {
+                    }
+                }
+            }
+
             //create an empty folder named version
-            versionFile = new File(versionFilePath);
+            versionFilePath = baseInfo.getReleasePath()+"\\"+newVersionNum;
+            File versionFile = new File(versionFilePath);
             if(!versionFile.exists()) {
                 if(!versionFile.mkdir())
                     throw new RuntimeException(new Exception());
@@ -62,14 +92,14 @@ public class ReleaseService {
             generateFileList(releaseFile, "");
 
             //generate Release.xml
-            generateReleaseList();
+            generateReleaseList(newVersionNum, updateLog);
 
             //zip Release.xml and version folder
-            packAndZip();
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
+            packAndZip(versionFile, new File(baseInfo.getReleasePath()+"\\ReleaseList.xml"));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//
+//        }
         return true;
     }
 
@@ -77,7 +107,7 @@ public class ReleaseService {
      *
      * @return
      */
-    public Boolean generateReleaseList () {
+    public Boolean generateReleaseList (String newVersionNum, String updateLog) {
 
         try {
             Document documentEle = DocumentHelper.createDocument();
@@ -89,11 +119,11 @@ public class ReleaseService {
             Element releaseDateEle = autoUpdaterEle.addElement("ReleaseDate");
             releaseDateEle.addText(simpleDateFormat.format(new Date()));
             Element releaseVersionEle = autoUpdaterEle.addElement("ReleaseVersion");
-            releaseVersionEle.addText(baseInfo.getMinVersion());
+            releaseVersionEle.addText(newVersionNum);
             Element minVersionEle = autoUpdaterEle.addElement("MinVersion");
-            minVersionEle.addText(baseInfo.getMinVersion());
+            minVersionEle.addText(newVersionNum);
             Element updateDesEle = autoUpdaterEle.addElement("UpdateDes");
-            updateDesEle.addText(baseInfo.getUpdateDes());
+            updateDesEle.addText(updateLog);
             Element applicationStartEle = autoUpdaterEle.addElement("ApplicationStart");
             applicationStartEle.addText(baseInfo.getApplicationStart());
             Element shortcutIconEle = autoUpdaterEle.addElement("ShortcutIcon");
@@ -107,10 +137,17 @@ public class ReleaseService {
                 fileEle.addAttribute("md5", releaseFileInfo.getMd5());
             }
             System.out.println(documentEle.asXML());
-            FileWriter fileWriter = new FileWriter(baseInfo.getReleasePath()+"\\ReleaseList.xml");
+//            FileWriter fileWriter = new FileWriter(baseInfo.getReleasePath()+"\\ReleaseList.xml");
+//            OutputFormat outputFormat = OutputFormat.createPrettyPrint();
+//            outputFormat.setEncoding("UTF-8");
+//            XMLWriter xmlWriter = new XMLWriter(fileWriter,outputFormat);
+//            xmlWriter.write(documentEle);
+//            xmlWriter.close();
             OutputFormat outputFormat = OutputFormat.createPrettyPrint();
-            outputFormat.setEncoding("utf-8");
-            XMLWriter xmlWriter = new XMLWriter(fileWriter,outputFormat);
+            outputFormat.setEncoding("UTF-8");
+            XMLWriter xmlWriter = new XMLWriter(
+                    new FileOutputStream(baseInfo.getReleasePath()+"\\ReleaseList.xml"), outputFormat);
+
             xmlWriter.write(documentEle);
             xmlWriter.close();
         } catch (Exception e) {
@@ -203,11 +240,11 @@ public class ReleaseService {
         return value;
     }
 
-    public Boolean packAndZip() {
+    public Boolean packAndZip(File versionFile, File xmlFile) {
         try {
             ZipFile zipFile = new ZipFile(versionFilePath+".zip");
             zipFile.createZipFileFromFolder(versionFile,new ZipParameters(),false,0);
-            zipFile.addFile(new File(baseInfo.getReleasePath()+"\\ReleaseList.xml"),new ZipParameters());
+            zipFile.addFile(xmlFile,new ZipParameters());
         } catch (Exception e) {
 
         }
@@ -279,14 +316,6 @@ public class ReleaseService {
 
     public void setBaseInfo(BaseInfo baseInfo) {
         this.baseInfo = baseInfo;
-    }
-
-    public void setReleaseFileInfoList(List<ReleaseFileInfo> releaseFileInfoList) {
-        this.releaseFileInfoList = releaseFileInfoList;
-    }
-
-    public void setSimpleDateFormat(SimpleDateFormat simpleDateFormat) {
-        this.simpleDateFormat = simpleDateFormat;
     }
 }
 

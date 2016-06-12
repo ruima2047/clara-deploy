@@ -1,7 +1,6 @@
 package com.clara.deploy.service;
 
 
-import com.clara.deploy.domain.PropertiesHolder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -29,9 +28,9 @@ public class UploadService extends HttpServlet {
             throws ServletException, IOException {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-config.xml");
         releaseService = ctx.getBean("releaseService",ReleaseService.class);
-        String s= PropertiesHolder.get("test");
-       // releaseService.build();
-        System.out.println(s);
+//        String s= PropertiesHolder.get("test");
+       releaseService.build();
+//        System.out.println(s);
     }
 
     public void doGet(HttpServletRequest request,
