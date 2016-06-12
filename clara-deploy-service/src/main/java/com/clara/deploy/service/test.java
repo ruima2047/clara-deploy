@@ -1,7 +1,5 @@
 package com.clara.deploy.service;
 
-import com.clara.deploy.domain.PropertiesHolder;
-
 /**
  * Created with IntelliJ IDEA.
  * User: marui5
