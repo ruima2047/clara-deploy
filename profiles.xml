@@ -6,12 +6,28 @@
         <profile>
             <id>gz-deploy-web</id>
             <properties>
-                <clara.deploy.AppName>WMS3</clara.deploy.AppName>
-                <clara.deploy.ReleaseURL>http://gz.ao1.jd.com/winapp/</clara.deploy.ReleaseURL>
-                <clara.deploy.ApplicationStart>JD.WMSAO1.WPFAPP.exe</clara.deploy.ApplicationStart>
-                <clara.deploy.ShortcutIcon>null</clara.deploy.ShortcutIcon>
-                <clara.deploy.ReleasePath>E:\\export\\JD.WMS3.Main\\JD.WMS3.Main.WFApp\\bin</clara.deploy.ReleasePath>
+
+                <gz.clara.deploy.AppName>WMS3</gz.clara.deploy.AppName>
+                <gz.clara.deploy.ReleaseURL>http://guan.ao1.jd.com/winapp/</gz.clara.deploy.ReleaseURL>
+                <gz.clara.deploy.ApplicationStart>JD.WMSAO1.WPFAPP.exe</gz.clara.deploy.ApplicationStart>
+                <gz.clara.deploy.ShortcutIcon>null</gz.clara.deploy.ShortcutIcon>
+                <gz.clara.deploy.ReleasePath>E:\\export\\Update\\guan\\PC</gz.clara.deploy.ReleasePath>
+
+                <guan.clara.deploy.AppName>WMS3</guan.clara.deploy.AppName>
+                <guan.clara.deploy.ReleaseURL>http://gz.ao1.jd.com/winapp/</guan.clara.deploy.ReleaseURL>
+                <guan.clara.deploy.ApplicationStart>JD.WMSAO1.WPFAPP.exe</guan.clara.deploy.ApplicationStart>
+                <guan.clara.deploy.ShortcutIcon>null</guan.clara.deploy.ShortcutIcon>
+                <guan.clara.deploy.ReleasePath>E:\\export\\Update\\gz\\PC</guan.clara.deploy.ReleasePath>
+
+                <sh.clara.deploy.AppName>WMS3</sh.clara.deploy.AppName>
+                <sh.clara.deploy.ReleaseURL>http://ao1.sh.jd.com/winapp</sh.clara.deploy.ReleaseURL>
+                <sh.clara.deploy.ApplicationStart>JD.WMSAO1.WPFAPP.exe</sh.clara.deploy.ApplicationStart>
+                <sh.clara.deploy.ShortcutIcon>null</sh.clara.deploy.ShortcutIcon>
+                <sh.clara.deploy.ReleasePath>E:\\export\\Update\\sh\\PC</sh.clara.deploy.ReleasePath>
+
             </properties>
         </profile>
     </profiles>
 </profilesXml>
+
+

@@ -47,7 +47,7 @@ public class ReleaseService {
             releaseFileInfoList = new ArrayList<ReleaseFileInfo>();
             simpleDateFormat = new SimpleDateFormat("yyyy/M/d H:mm:ss");
             File releaseFile = new File(baseInfo.getReleasePath()+"\\Release");
-            updateLogPath = baseInfo.getReleasePath()+"\\"+"updateLog";
+            updateLogPath = baseInfo.getReleasePath()+"\\"+"updateLog.txt";
 
             //get the new version number and update description
             File updateLogFile = new File(updateLogPath);

@@ -10,8 +10,6 @@ package com.clara.deploy.domain;
 public class BaseInfo {
     public String appName;
     public String releaseURL;
-    public String minVersion;
-    public String updateDes;
     public String applicationStart;
     public String shortcutIcon;
     public String releasePath;
@@ -29,22 +27,6 @@ public class BaseInfo {
 
     public void setReleaseURL(String releaseURL) {
         this.releaseURL = releaseURL;
-    }
-
-    public String getMinVersion() {
-        return minVersion;
-    }
-
-    public void setMinVersion(String minVersion) {
-        this.minVersion = minVersion;
-    }
-
-    public String getUpdateDes() {
-        return updateDes;
-    }
-
-    public void setUpdateDes(String updateDes) {
-        this.updateDes = updateDes;
     }
 
     public String getApplicationStart() {

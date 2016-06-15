@@ -20,11 +20,5 @@ public class test {
 //        System.out.println(releaseService.updateVersionNumNew("9.9.9"));
 //        System.out.println(releaseService.updateVersionNumNew("1.0.5.2"));
 //        System.out.println(releaseService.updateVersionNumNew("9.9.9.9"));
-        try {
-            String s= PropertiesHolder.get("test");
-            System.out.println(s);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

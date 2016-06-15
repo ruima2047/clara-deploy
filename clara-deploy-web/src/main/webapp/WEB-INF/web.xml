@@ -16,8 +16,23 @@
 
     <servlet>
         <servlet-name>UploadAction</servlet-name>
-        <servlet-class>com.clara.deploy.service.UploadService</servlet-class>
+        <servlet-class>com.clara.deploy.service.UploadServlet</servlet-class>
     </servlet>
+
+    <servlet>
+        <servlet-name>ReleaseAction</servlet-name>
+        <servlet-class>com.clara.deploy.service.ReleaseServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>testAction</servlet-name>
+        <servlet-class>com.clara.deploy.service.UploadifySerlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>testAction</servlet-name>
+        <url-pattern>/testAction</url-pattern>
+    </servlet-mapping>
 
     <!--<servlet>-->
         <!--<servlet-name>appServlet</servlet-name>-->
@@ -40,6 +55,11 @@
     <!--</servlet>-->
 
     <servlet-mapping>
+        <servlet-name>ReleaseAction</servlet-name>
+        <url-pattern>/ReleaseAction</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
         <servlet-name>UploadAction</servlet-name>
         <url-pattern>/UploadAction</url-pattern>
     </servlet-mapping>
@@ -48,5 +68,22 @@
         <!--<servlet-name>BuildAction</servlet-name>-->
         <!--<url-pattern>/BuildAction</url-pattern>-->
     <!--</servlet-mapping>-->
+
+    <!--<welcome-file-list>-->
+        <!--<welcome-file>ajaxFileUpload.jsp</welcome-file>-->
+    <!--</welcome-file-list>-->
+    <!--<filter>-->
+        <!--<description>解决参数传递过程中的乱码问题</description>-->
+        <!--<filter-name>CharacterEncodingUTF8</filter-name>-->
+        <!--<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>-->
+        <!--<init-param>-->
+            <!--<param-name>encoding</param-name>-->
+            <!--<param-value>UTF-8</param-value>-->
+        <!--</init-param>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>CharacterEncodingUTF8</filter-name>-->
+        <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
 
 </web-app>

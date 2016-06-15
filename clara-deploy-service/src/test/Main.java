@@ -1,5 +1,3 @@
-import java.util.Vector;
-
 /**
  * Created with IntelliJ IDEA.
  * User: marui5
@@ -21,11 +19,6 @@ public class Main {
 //        person2.hi();
 //    }
     public static void main(String []args) {
-        Manager m = new Manager("ma");
-        Teacher t = new Teacher("z");
-        t.hi();
-        m.hi();
-        m.hello();
 
     }
 }

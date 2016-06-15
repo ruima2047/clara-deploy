@@ -1,0 +1,117 @@
+<!--<%@ page language="java" import="java.util.*" pageEncoding="UTF-8" contentType="text/html; charset=UTF-8"%>-->
+<!--<%-->
+<!--String path = request.getContextPath();-->
+<!--%>-->
+
+<html>
+<head>
+
+    <title>Clara-Deploy</title>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <link rel="stylesheet" href="uploadify/uploadify.css" type="text/css"/>
+    <script type="text/javascript" src="uploadify/jquery-3.0.0.js"></script>
+    <script type="text/javascript" src="uploadify/jquery.uploadify.js"></script>
+    <script type="text/javascript" src="uploadify/swfobject.js"></script>
+    <script type="text/javascript">
+
+        function UploadFile() {
+            //校验
+            var userName = $('#userName').val();
+            if (userName.replace(/\s/g, '') == '') {
+                alert("username can't be null");
+                return false;
+            }
+
+            var moduleName = $('#moduleName').val();
+            if (moduleName.replace(/\s/g, '') == '') {
+                alert("module can't be null");
+                return false;
+            }
+            var warehouse = new Array();
+
+            if ($('#gz').is(':checked')) {
+                warehouse.push('gz');
+            }
+            if ($('#guan').is(':checked')) {
+                warehouse.push('guan');
+            }
+            if ($('#sh').is(':checked')) {
+                warehouse.push('sh');
+            }
+            if (warehouse.length == 0) {
+                alert("warehouse can't be null");
+                return false;
+            }
+            $("#fileupload").uploadify('upload','*');
+//                                $("#fileupload").uploadify("settings", "formData", {'userName': userName, 'moduleName': moduleName, 'warehouse': warehouse});
+
+
+        }
+
+        $(function () {
+            $("#fileupload").uploadify({
+                'height': 27,
+                'width': 80,
+                'buttonText': 'file',
+                'swf': '/uploadify/uploadify.swf',
+                'uploader': '/UploadAction',
+                'auto': false,
+                'multi':true,
+                'onUploadStart' : function (file) {
+
+                    var userName = $('#userName').val();
+                    var moduleName = $('#moduleName').val();
+                    var warehouse = new Array();
+
+                    if ($('#gz').is(':checked')) {
+                        warehouse.push('gz');
+                    }
+                    if ($('#guan').is(':checked')) {
+                        warehouse.push('guan');
+                    }
+                    if ($('#sh').is(':checked')) {
+                        warehouse.push('sh');
+                    }
+                    $("#fileupload").uploadify("settings", "formData", {'userName': userName, 'moduleName': moduleName, 'warehouse': warehouse});
+                },
+                //上传成功
+                'onUploadSuccess' : function(file, data, response) {
+                    alert("success");
+                },
+                //上传错误
+                'onUploadError' : function(file, errorCode, errorMsg, errorString) {
+                    alert("failed");
+                }
+            });
+        });
+
+    </script>
+</head>
+
+<body>
+
+userName: <input type="text" id="userName" name="userName">
+<br>
+
+<!--moduleName: <input type="text" id="moduleName" name="moduleName" value="moduleName">-->
+<input type="file" name="uploadify" id="fileupload"/>
+<!--<a href="javascript:$('#fileupload').uploadify('upload','*')">upload</a>&nbsp;-->
+<input type="button" onclick="UploadFile()" value="UploadFile" />
+
+<h3>Warehouse</h3>
+<input type="checkbox" name="gz" id="gz"/> gz
+<input type="checkbox" name="guan" id="guan"/> guan
+<input type="checkbox" name="sh" id="sh"/> sh
+
+<h3>Module</h3>
+<select name="moduleName" id="moduleName">
+    <option value="receiving">receiving</option>
+    <option value="check">check</option>
+    <option value="wave">wave</option>
+    <option value="master">master</option>
+</select>
+
+</body>
+</html>
