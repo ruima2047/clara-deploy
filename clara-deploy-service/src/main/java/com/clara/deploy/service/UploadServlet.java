@@ -42,13 +42,15 @@ public class UploadServlet extends HttpServlet {
                        HttpServletResponse response)
             throws ServletException, IOException {
 
-        File file;
+//        File file;
         // sum of path number
         int pathCount = 0;
         // file exits
         boolean fileExits = false;
         //check the enctype
         response.setContentType("text/html");
+
+
 
         DiskFileItemFactory factory = new DiskFileItemFactory();
         ServletFileUpload upload = new ServletFileUpload(factory);
@@ -57,46 +59,81 @@ public class UploadServlet extends HttpServlet {
             List fileItems = upload.parseRequest(request);
             // Process the uploaded file items
             Iterator i = fileItems.iterator();
-            List<String> filePathList = new ArrayList<String>();
+            List<FileItem> fileItemList = new ArrayList<FileItem>();
+            List<String> warehouseList = new ArrayList<String>();
             String moduleName = null;
+            String userName = null;
             while (i.hasNext()) {
                 FileItem fileItem = (FileItem) i.next();
-                String testr = fileItem.getFieldName();
                 if (fileItem.isFormField() && fileItem.getFieldName().equals("moduleName")) {
-                    moduleName = fileItem.getFieldName();
+                    moduleName = fileItem.getString();
+                } else if(fileItem.isFormField() && fileItem.getFieldName().equals("userName")) {
+                    userName = fileItem.getString();
                 } else if (fileItem.isFormField() && fileItem.getFieldName().equals("warehouse")) {
-                    if(moduleName == null || moduleName == "") {
-                        throw new RuntimeException("failed to load module name!");
-                    }
-                    String st = fileItem.getFieldName();
-                    BaseInfo baseInfo = (BaseInfo)baseInfoMap.get(fileItem.getFieldName());
-                    if(baseInfo == null) {
-                        throw new RuntimeException("failed to load baseInfo!");
-                    }
-                    String uploadPath = baseInfo.getReleasePath() + "\\Release\\" +moduleName;
-                    filePathList.add(uploadPath);
+                    String ster = fileItem.getString();
+                    System.out.println(ster);
+                    warehouseList.add(fileItem.getString());
+//                    if(moduleName == null || moduleName == "") {
+//                        throw new RuntimeException("failed to load module name!");
+//                    }
+//                    String st = fileItem.getFieldName();
+//                    BaseInfo baseInfo = (BaseInfo)baseInfoMap.get(fileItem.getFieldName());
+//                    if(baseInfo == null) {
+//                        throw new RuntimeException("failed to load baseInfo!");
+//                    }
+//                    String uploadPath = baseInfo.getReleasePath() + "\\Release\\" +moduleName;
+//                    filePathList.add(uploadPath);
 
                 } else if (!fileItem.isFormField()) {
                     fileExits = true;
-                    // Get the uploaded file parameters
-                    String fileName = fileItem.getName();
-                    long sizeInBytes = fileItem.getSize();
-                    logger.info("write file " + fileName + " size " + sizeInBytes);
-                    for (int k = 0; k < pathCount; k++) {
-                        String strp = filePathList.get(k) +"\\" + fileName;
-                        file = new File(filePathList.get(k) +
-                                fileName.substring(fileName.lastIndexOf("\\") + 1));
-                        OutputStream os = new FileOutputStream(file);
-                        InputStream is = fileItem.getInputStream();
-                        byte buf[] = new byte[1024];
-                        int length = 0;
-                        while ((length = is.read(buf)) > 0) {
-                            os.write(buf, 0, length);
-                        }
-                        os.flush();
-                        os.close();
-                        is.close();
+                    fileItemList.add(fileItem);
+//                    // Get the uploaded file parameters
+//                    String fileName = fileItem.getName();
+//                    long sizeInBytes = fileItem.getSize();
+//                    logger.info("write file " + fileName + " size " + sizeInBytes);
+//                    for (int k = 0; k < pathCount; k++) {
+//                        String strp = filePathList.get(k) +"\\" + fileName;
+//                        file = new File(filePathList.get(k) +
+//                                fileName.substring(fileName.lastIndexOf("\\") + 1));
+//                        OutputStream os = new FileOutputStream(file);
+//                        InputStream is = fileItem.getInputStream();
+//                        byte buf[] = new byte[1024];
+//                        int length = 0;
+//                        while ((length = is.read(buf)) > 0) {
+//                            os.write(buf, 0, length);
+//                        }
+//                        os.flush();
+//                        os.close();
+//                        is.close();
+//                    }
+                }
+            }
+            if(moduleName == null) {
+                logger.error("moduleName is null!");
+                throw new RuntimeException("moduleName is null!");
+            }
+            if(warehouseList.size() == 0) {
+                logger.error("warehouse is null!");
+                throw new RuntimeException("warehouse is null!");
+            }
+            List<String> filePathList = new ArrayList<String>();
+
+            for(String warehouse : warehouseList) {
+                BaseInfo baseInfo = (BaseInfo)baseInfoMap.get(warehouse);
+                String uploadPath = baseInfo.getReleasePath() + "\\Release\\DLL\\" +moduleName;
+                filePathList.add(uploadPath);
+                for(FileItem fileItem : fileItemList) {
+                    File file = new File(uploadPath+"\\"+fileItem.getName());
+                    OutputStream os = new FileOutputStream(file);
+                    InputStream is = fileItem.getInputStream();
+                    byte buf[] = new byte[1024];
+                    while(is.read(buf) > 0) {
+                        os.write(buf,0,buf.length);
                     }
+                    os.flush();
+                    os.close();
+                    is.close();
+                    logger.warn(String.format("模块:%s 用户:%s 文件:%s",moduleName,userName,fileItem.getName()));
                 }
             }
             if (!fileExits) {

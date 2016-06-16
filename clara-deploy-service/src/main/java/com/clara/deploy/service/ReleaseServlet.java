@@ -5,6 +5,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,8 +23,10 @@ public class ReleaseServlet extends HttpServlet {
     public void doPost(HttpServletRequest request,
                        HttpServletResponse response)
             throws ServletException, IOException {
+        List<String> moduleNameList = new ArrayList<String>();
+        moduleNameList.add("gz");
         ReleaseService releaseService = new ReleaseService();
-        releaseService.build();
+        releaseService.build(moduleNameList);
     }
 
     public void doGet(HttpServletRequest request,
