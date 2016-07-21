@@ -19,7 +19,7 @@
         <property name="releaseURL" value="${gzReleaseURL}"/>
         <property name="applicationStart" value="${gzApplicationStart}"/>
         <property name="shortcutIcon" value="${gzShortcutIcon}"/>
-        <property name="releasePath" value="${gzReleasePath}"/>
+        <property name="rootPath" value="${gzRootPath}"/>
     </bean>
 
     <bean id="guanBaseInfo" class="com.clara.deploy.domain.BaseInfo">
@@ -27,7 +27,7 @@
         <property name="releaseURL" value="${guanReleaseURL}"/>
         <property name="applicationStart" value="${guanApplicationStart}"/>
         <property name="shortcutIcon" value="${guanShortcutIcon}"/>
-        <property name="releasePath" value="${guanReleasePath}"/>
+        <property name="rootPath" value="${guanRootPath}"/>
     </bean>
 
     <bean id="shBaseInfo" class="com.clara.deploy.domain.BaseInfo">
@@ -35,7 +35,7 @@
         <property name="releaseURL" value="${shReleaseURL}"/>
         <property name="applicationStart" value="${shApplicationStart}"/>
         <property name="shortcutIcon" value="${shShortcutIcon}"/>
-        <property name="releasePath" value="${shReleasePath}"/>
+        <property name="rootPath" value="${shRootPath}"/>
     </bean>
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">

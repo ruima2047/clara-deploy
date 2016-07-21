@@ -12,7 +12,7 @@ public class BaseInfo {
     public String releaseURL;
     public String applicationStart;
     public String shortcutIcon;
-    public String releasePath;
+    public String rootPath;
     public String getAppName() {
         return appName;
     }
@@ -45,11 +45,11 @@ public class BaseInfo {
         this.shortcutIcon = shortcutIcon;
     }
 
-    public String getReleasePath() {
-        return releasePath;
+    public String getRootPath() {
+        return rootPath;
     }
 
-    public void setReleasePath(String releasePath) {
-        this.releasePath = releasePath;
+    public void setRootPath(String rootPath) {
+        this.rootPath = rootPath;
     }
 }

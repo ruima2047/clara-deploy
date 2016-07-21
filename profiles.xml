@@ -4,7 +4,7 @@
              xsi:schemaLocation="http://maven.apache.org/PROFILES/1.0.0 http://maven.apache.org/xsd/profiles-1.0.0.xsd">
     <profiles>
         <profile>
-            <id>deploy-web</id>
+            <id>deploy-test</id>
             <properties>
 
                 <gz.clara.deploy.AppName>WMS3</gz.clara.deploy.AppName>
@@ -26,6 +26,33 @@
                 <sh.clara.deploy.ReleasePath>E:\\export\\Update\\sh\\PC</sh.clara.deploy.ReleasePath>
 
                 <clara.deploy.traceLogPath>E:\\export\\Update\\Logs</clara.deploy.traceLogPath>
+
+            </properties>
+        </profile>
+
+        <profile>
+            <id>deploy-web</id>
+            <properties>
+
+                <gz.clara.deploy.AppName>WMS3</gz.clara.deploy.AppName>
+                <gz.clara.deploy.ReleaseURL>http://gz.ao1.jd.com/winapp/</gz.clara.deploy.ReleaseURL>
+                <gz.clara.deploy.ApplicationStart>JD.WMSAO1.WPFAPP.exe</gz.clara.deploy.ApplicationStart>
+                <gz.clara.deploy.ShortcutIcon>null</gz.clara.deploy.ShortcutIcon>
+                <gz.clara.deploy.ReleasePath>/export/Update/gz/PC</gz.clara.deploy.ReleasePath>
+
+                <guan.clara.deploy.AppName>WMS3</guan.clara.deploy.AppName>
+                <guan.clara.deploy.ReleaseURL>http://guan.ao1.jd.com/winapp/</guan.clara.deploy.ReleaseURL>
+                <guan.clara.deploy.ApplicationStart>JD.WMSAO1.WPFAPP.exe</guan.clara.deploy.ApplicationStart>
+                <guan.clara.deploy.ShortcutIcon>null</guan.clara.deploy.ShortcutIcon>
+                <guan.clara.deploy.ReleasePath>/export/Update/guan/PC</guan.clara.deploy.ReleasePath>
+
+                <sh.clara.deploy.AppName>WMS3</sh.clara.deploy.AppName>
+                <sh.clara.deploy.ReleaseURL>http://ao1.sh.jd.com/winapp</sh.clara.deploy.ReleaseURL>
+                <sh.clara.deploy.ApplicationStart>JD.WMSAO1.WPFAPP.exe</sh.clara.deploy.ApplicationStart>
+                <sh.clara.deploy.ShortcutIcon>null</sh.clara.deploy.ShortcutIcon>
+                <sh.clara.deploy.ReleasePath>/export/Update/sh/PC</sh.clara.deploy.ReleasePath>
+
+                <clara.deploy.traceLogPath>/export/Update/Logs</clara.deploy.traceLogPath>
 
             </properties>
         </profile>

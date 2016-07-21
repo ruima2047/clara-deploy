@@ -1,6 +1,7 @@
 package com.clara.deploy.service;
 
 import com.clara.deploy.domain.BaseInfo;
+import com.clara.deploy.domain.PathUtil;
 import com.clara.deploy.domain.ReleaseFileInfo;
 import net.lingala.zip4j.model.ZipParameters;
 import net.lingala.zip4j.core.ZipFile;
@@ -53,8 +54,8 @@ public class ReleaseService {
             for (String warehouse : warehouseList) {
                 baseInfo = (BaseInfo) baseInfoMap.get(warehouse);
 
-                File releaseFile = new File(baseInfo.getReleasePath() + "\\Release");
-                updateLogPath = baseInfo.getReleasePath() + "\\updateLog\\updateLog";
+                File releaseFile = new File(PathUtil.getPath(baseInfo.getRootPath(), "Release"));
+                updateLogPath = PathUtil.getPath(baseInfo.getRootPath(), "UpdateLog", "updateLog");
 
                 //get the new version number and update description
                 File updateLogFile = new File(updateLogPath);
@@ -88,7 +89,7 @@ public class ReleaseService {
                 }
 
                 //create an empty folder named version
-                versionFilePath = baseInfo.getReleasePath() + "\\" + versionNum;
+                versionFilePath = PathUtil.getPath(baseInfo.getRootPath(), versionNum);
                 File versionFile = new File(versionFilePath);
                 if (!versionFile.exists()) {
                     if (!versionFile.mkdir())
@@ -96,16 +97,16 @@ public class ReleaseService {
                 }
 
                 //copy files to version folder and get all files' information
-                generateFileList(releaseFile, "");
+                generateFileList(releaseFile, versionFilePath);
 
                 //generate Release.xml
                 generateReleaseList(versionNum, updateLog);
 
                 //zip Release.xml and version folder
-                packAndZip(versionFile, new File(baseInfo.getReleasePath() + "\\ReleaseList.xml"));
+                packAndZip(versionFile, new File(PathUtil.getPath(baseInfo.getRootPath(), "ReleaseList.xml")));
 
                 //update updateLog
-                File appendVersion = new File(updateLogPath + "_" + versionNum);
+                File appendVersion = new File(updateLogPath.concat("_").concat(versionNum));
                 updateLogFile.renameTo(appendVersion);
                 FileWriter fw = new FileWriter(updateLogPath);
                 BufferedWriter bw = new BufferedWriter(fw);
@@ -154,16 +155,10 @@ public class ReleaseService {
                 fileEle.addAttribute("md5", releaseFileInfo.getMd5());
             }
             System.out.println(documentEle.asXML());
-//            FileWriter fileWriter = new FileWriter(baseInfo.getReleasePath()+"\\ReleaseList.xml");
-//            OutputFormat outputFormat = OutputFormat.createPrettyPrint();
-//            outputFormat.setEncoding("UTF-8");
-//            XMLWriter xmlWriter = new XMLWriter(fileWriter,outputFormat);
-//            xmlWriter.write(documentEle);
-//            xmlWriter.close();
             OutputFormat outputFormat = OutputFormat.createPrettyPrint();
             outputFormat.setEncoding("UTF-8");
             XMLWriter xmlWriter = new XMLWriter(
-                    new FileOutputStream(baseInfo.getReleasePath() + "\\ReleaseList.xml"), outputFormat);
+                    new FileOutputStream(PathUtil.getPath(baseInfo.getRootPath(), "ReleaseList.xml")), outputFormat);
 
             xmlWriter.write(documentEle);
             xmlWriter.close();
@@ -185,16 +180,15 @@ public class ReleaseService {
         try {
             for (File file : folder.listFiles()) {
                 if (file.isDirectory()) {
-                    generateFileList(file, relativePath + file.getName() + "\\");
+                    generateFileList(file, PathUtil.getRelativePath(relativePath, file.getName()));
                 } else {
                     ReleaseFileInfo releaseFileInfo = new ReleaseFileInfo();
-                    releaseFileInfo.setName(relativePath + file.getName());
+                    releaseFileInfo.setName(relativePath.concat(file.getName()));
                     releaseFileInfo.setDate(simpleDateFormat.format(new Date(file.lastModified())));
                     releaseFileInfo.setSize(Long.toString(file.length() >> 10));
                     releaseFileInfo.setMd5(getMd5ByFile(file));
                     releaseFileInfoList.add(releaseFileInfo);
-                    copyFileToDirectory(file, versionFilePath + "\\" + relativePath);
-//                    FileUtils.copyFileToDirectory(file,new File(versionFilePath));
+                    copyFileToDirectory(file, PathUtil.getPath(versionFilePath, relativePath));
                 }
             }
         } catch (Exception e) {
@@ -219,7 +213,7 @@ public class ReleaseService {
         FileChannel outputChannel = null;
         try {
             inputChannel = new FileInputStream(file).getChannel();
-            outputChannel = new FileOutputStream(new File(path + "\\" + file.getName())).getChannel();
+            outputChannel = new FileOutputStream(new File(PathUtil.getPath(path, file.getName()))).getChannel();
             outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
         } catch (IOException io) {
             io.printStackTrace();

@@ -55,8 +55,8 @@
                 'width': 80,
                 'buttonText': 'file',
                 'swf': '/uploadify/uploadify.swf',
-//                'uploader': '/UploadAction',
-                'uploader': '/ReleaseAction',
+                'uploader': '/UploadAction',
+//                'uploader': '/ReleaseAction',
                 //'cancelImg' : '/uploadify/uploadify-cancel.png',
                 'auto': false,
                 'multi':true,
@@ -77,19 +77,25 @@
                     if ($('#sh').is(':checked')) {
                         warehouse.push('sh');
                     }
+
                     $("#fileupload").uploadify("settings", "formData", {'userName': $('#userName').val(), 'moduleName': $('#moduleName').val(), 'warehouse': warehouse});
+                },
+                'onCancel' : function(event, queueID, fileObj) {
+                    //alert('The file ' + file.name + '--' + file.size + ' was cancelled.');
+                },
+                //上传成功
+                'onUploadSuccess' : function(file, data, response) {
+                    if(response == 'true') {
+                        alert("success");
+                    } else {
+                        alert("failed");
+                    }
+
+                },
+                //上传错误
+                'onUploadError' : function(file, errorCode, errorMsg, errorString) {
+                    alert("failed");
                 }
-//                'onCancel' : function(event, queueID, fileObj) {
-//                    //alert('The file ' + file.name + '--' + file.size + ' was cancelled.');
-//                }
-//                //上传成功
-//                'onUploadSuccess' : function(file, data, response) {
-//                    alert("success");
-//                }
-//                //上传错误
-//                'onUploadError' : function(file, errorCode, errorMsg, errorString) {
-//                    alert("failed");
-//                }
             });
         });
 
@@ -101,7 +107,7 @@
 <br>
 userName: <input type="text" id="userName" name="userName">
 <br>
-userName: <input type="text" id="description" name="Description">
+description: <input type="text" id="description" name="Description">
 
 
 <!--moduleName: <input type="text" id="moduleName" name="moduleName" value="moduleName">-->

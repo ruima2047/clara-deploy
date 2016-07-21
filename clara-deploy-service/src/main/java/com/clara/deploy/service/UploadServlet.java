@@ -5,6 +5,7 @@ import java.io.*;
 import java.util.*;
 
 import com.clara.deploy.domain.BaseInfo;
+import com.clara.deploy.domain.PathUtil;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -42,10 +43,7 @@ public class UploadServlet extends HttpServlet {
                        HttpServletResponse response)
             throws ServletException, IOException {
 
-//        File file;
-        // sum of path number
-        int pathCount = 0;
-        // file exits
+        //file exits
         boolean fileExits = false;
         //check the enctype
         response.setContentType("text/html");
@@ -73,39 +71,10 @@ public class UploadServlet extends HttpServlet {
                     String ster = fileItem.getString();
                     System.out.println(ster);
                     warehouseList.add(fileItem.getString());
-//                    if(moduleName == null || moduleName == "") {
-//                        throw new RuntimeException("failed to load module name!");
-//                    }
-//                    String st = fileItem.getFieldName();
-//                    BaseInfo baseInfo = (BaseInfo)baseInfoMap.get(fileItem.getFieldName());
-//                    if(baseInfo == null) {
-//                        throw new RuntimeException("failed to load baseInfo!");
-//                    }
-//                    String uploadPath = baseInfo.getReleasePath() + "\\Release\\" +moduleName;
-//                    filePathList.add(uploadPath);
 
                 } else if (!fileItem.isFormField()) {
                     fileExits = true;
                     fileItemList.add(fileItem);
-//                    // Get the uploaded file parameters
-//                    String fileName = fileItem.getName();
-//                    long sizeInBytes = fileItem.getSize();
-//                    logger.info("write file " + fileName + " size " + sizeInBytes);
-//                    for (int k = 0; k < pathCount; k++) {
-//                        String strp = filePathList.get(k) +"\\" + fileName;
-//                        file = new File(filePathList.get(k) +
-//                                fileName.substring(fileName.lastIndexOf("\\") + 1));
-//                        OutputStream os = new FileOutputStream(file);
-//                        InputStream is = fileItem.getInputStream();
-//                        byte buf[] = new byte[1024];
-//                        int length = 0;
-//                        while ((length = is.read(buf)) > 0) {
-//                            os.write(buf, 0, length);
-//                        }
-//                        os.flush();
-//                        os.close();
-//                        is.close();
-//                    }
                 }
             }
             if(moduleName == null) {
@@ -120,10 +89,10 @@ public class UploadServlet extends HttpServlet {
 
             for(String warehouse : warehouseList) {
                 BaseInfo baseInfo = (BaseInfo)baseInfoMap.get(warehouse);
-                String uploadPath = baseInfo.getReleasePath() + "\\Release\\DLL\\" +moduleName;
+                String uploadPath = PathUtil.getPath(baseInfo.getRootPath(),"Release","DLL",moduleName);
                 filePathList.add(uploadPath);
                 for(FileItem fileItem : fileItemList) {
-                    File file = new File(uploadPath+"\\"+fileItem.getName());
+                    File file = new File(PathUtil.getPath(uploadPath,fileItem.getName()));
                     OutputStream os = new FileOutputStream(file);
                     InputStream is = fileItem.getInputStream();
                     byte buf[] = new byte[1024];
@@ -141,10 +110,9 @@ public class UploadServlet extends HttpServlet {
             }
 
             PrintWriter writer = response.getWriter();
-            writer.print("{");
-            writer.print("msg:\"文件大小: ,文件名:" + "\"");
-            writer.print(",picUrl:\"" + "http" + "\"");
-            writer.print("}");
+            writer.print("true");
+            writer.flush();
+            writer.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
