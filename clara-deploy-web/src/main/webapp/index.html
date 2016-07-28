@@ -113,7 +113,16 @@ description: <input type="text" id="description" name="Description">
 <!--moduleName: <input type="text" id="moduleName" name="moduleName" value="moduleName">-->
 <input type="file" name="uploadify" id="fileupload"/>
 <!--<a href="javascript:$('#fileupload').uploadify('upload','*')">upload</a>&nbsp;-->
+<input type="checkbox" name="gz" id="gzRelease"/> gz
+<input type="checkbox" name="guan" id="guanRelease"/> guan
+<input type="checkbox" name="sh" id="shRelease"/> sh
+
 <input type="button" onclick="UploadFile()" value="UploadFile" />
+
+<!--enctype="multipart/form-data"-->
+<form action="ReleaseAction" method="POST" >
+    <input type="submit" value="Build" />
+</form>
 
 <h3>Warehouse</h3>
 <input type="checkbox" name="gz" id="gz"/> gz
