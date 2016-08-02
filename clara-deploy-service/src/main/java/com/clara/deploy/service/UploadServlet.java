@@ -67,7 +67,9 @@ public class UploadServlet extends HttpServlet {
                     moduleName = fileItem.getString();
                 } else if(fileItem.isFormField() && fileItem.getFieldName().equals("userName")) {
                     userName = fileItem.getString();
-                } else if (fileItem.isFormField() && fileItem.getFieldName().equals("warehouse")) {
+                }else if(fileItem.isFormField() && fileItem.getFieldName().equals("description")) {
+                    userName = fileItem.getString();
+                }else if (fileItem.isFormField() && fileItem.getFieldName().equals("warehouse")) {
                     String ster = fileItem.getString();
                     System.out.println(ster);
                     warehouseList.add(fileItem.getString());

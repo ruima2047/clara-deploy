@@ -43,7 +43,6 @@ public class ReleaseService {
     public Boolean build(List<String> warehouseList) {
         try {
             ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-config.xml");
-            baseInfo = ctx.getBean("baseInfo",BaseInfo.class);
 
             HashMap baseInfoMap = ctx.getBean("baseInfoMap", HashMap.class);
             //initialize settings
