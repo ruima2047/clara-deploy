@@ -13,18 +13,20 @@
             background-color: #ffffff;
             border: 1px solid black;
             float: right;
-            filter:alpha(opacity=80);
-            opacity:0.8;
+            filter: alpha(opacity=80);
+            opacity: 0.8;
         }
+
         div.upload {
             height: 400px;
             width: 400px;
             background-color: #ffffff;
             border: 1px solid black;
             float: left;
-            filter:alpha(opacity=80);
-            opacity:0.8;
+            filter: alpha(opacity=80);
+            opacity: 0.8;
         }
+
         body {
             background-image: url('/image/milkyWay.jpg');
             font-family: "Times New Roman", Georgia, Serif;
@@ -71,6 +73,9 @@
                 alert("warehouse can't be null");
                 return false;
             }
+
+            document.getElementById("uploadForm").submit()
+
             $("#fileupload").uploadify('upload', '*');
 
         }
@@ -133,32 +138,34 @@
 
 <body>
 <div class="upload">
-    <p>
-        <br>选择库房</br>
-        <input type="checkbox" name="gz" id="gz"/> 广州
-        <input type="checkbox" name="guan" id="guan"/> 固安
-        <input type="checkbox" name="sh" id="sh"/> 上海
-    </p>
-    <p>
-        <br>选择模块</br>
-        <select name="moduleName" id="moduleName">
-            <option value="receiving">receiving</option>
-            <option value="check">check</option>
-            <option value="wave">wave</option>
-            <option value="master">master</option>
-        </select>
-    </p>
+    <form id="uploadForm" action="DescriptAction" method="POST">
+        <p>
+            <br>选择库房</br>
+            <input type="checkbox" name="gz" id="gz"/> 广州
+            <input type="checkbox" name="guan" id="guan"/> 固安
+            <input type="checkbox" name="sh" id="sh"/> 上海
+        </p>
+        <p>
+            <br>选择模块</br>
+            <select name="moduleName" id="moduleName">
+                <option value="receiving">receiving</option>
+                <option value="check">check</option>
+                <option value="wave">wave</option>
+                <option value="master">master</option>
+            </select>
+        </p>
 
-    <br>
-    用户名: <input type="text" id="userName" name="userName">
-    </br>
-    <p>
-        <br>更新内容(多条换行即可):</br>
-        <textarea name="description" cols=40 rows=4></textarea></p>
-    <p>
-        <input type="file" name="uploadify" id="fileupload"/>
-        <input type="button" onclick="UploadFile()" value="上传"/>
-    </p>
+        <br>
+        用户名: <input type="text" id="userName" name="userName">
+        </br>
+        <p>
+            <br>更新内容(多条换行即可):</br>
+            <textarea name="description" cols=40 rows=4></textarea></p>
+        <p>
+            <input type="file" name="uploadify" id="fileupload"/>
+            <input type="button" onclick="UploadFile()" value="上传"/>
+        </p>
+    </form>
 </div>
 
 

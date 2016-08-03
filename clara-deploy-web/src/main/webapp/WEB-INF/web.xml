@@ -25,13 +25,13 @@
     </servlet>
 
     <servlet>
-        <servlet-name>testAction</servlet-name>
-        <servlet-class>com.clara.deploy.service.UploadifySerlet</servlet-class>
+        <servlet-name>DescriptAction</servlet-name>
+        <servlet-class>com.clara.deploy.service.DescriptSerlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>testAction</servlet-name>
-        <url-pattern>/testAction</url-pattern>
+        <servlet-name>DescriptAction</servlet-name>
+        <url-pattern>/DescriptAction</url-pattern>
     </servlet-mapping>
 
     <!--<servlet>-->

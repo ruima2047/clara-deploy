@@ -61,6 +61,7 @@ public class UploadServlet extends HttpServlet {
             List<String> warehouseList = new ArrayList<String>();
             String moduleName = null;
             String userName = null;
+            String description = null;
             while (i.hasNext()) {
                 FileItem fileItem = (FileItem) i.next();
                 if (fileItem.isFormField() && fileItem.getFieldName().equals("moduleName")) {
@@ -68,10 +69,8 @@ public class UploadServlet extends HttpServlet {
                 } else if(fileItem.isFormField() && fileItem.getFieldName().equals("userName")) {
                     userName = fileItem.getString();
                 }else if(fileItem.isFormField() && fileItem.getFieldName().equals("description")) {
-                    userName = fileItem.getString();
+                    description = fileItem.getString();
                 }else if (fileItem.isFormField() && fileItem.getFieldName().equals("warehouse")) {
-                    String ster = fileItem.getString();
-                    System.out.println(ster);
                     warehouseList.add(fileItem.getString());
 
                 } else if (!fileItem.isFormField()) {
@@ -117,6 +116,8 @@ public class UploadServlet extends HttpServlet {
             writer.close();
         } catch (Exception ex) {
             ex.printStackTrace();
+        } finally {
+
         }
     }
 
