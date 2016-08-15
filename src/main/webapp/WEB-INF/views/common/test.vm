@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>dll</title>
+    <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
+    <script src="#springUrl('')/bootstrap/js/fileinput.min.js"></script>
+    <link href="#springUrl('')/bootstrap/css/fileinput.min.css" type="text/css"/>
+
+    <link rel="stylesheet" href="#springUrl('')/uploadify/uploadify.css" />
+    <script src="#springUrl('')/uploadify/jquery.uploadify.min.js"></script>
+    <style type="text/css">
+
+    </style>
+
+    <script>
+
+    </script>
+</head>
+<body>
+<div class='container-fluid'>
+    <h2 class='page-header'>客户端更新</h2>
+
+    <div class='tabbable tabs-left'>
+
+        <ul id="myTab" class="nav nav-tabs">
+            <li class="active">
+                <a href="#home" data-toggle="tab">
+                    HOME
+                </a>
+            </li>
+            <li><a href="#upload" data-toggle="tab">上传dll</a></li>
+            <li><a href="#release" data-toggle="tab">打包</a></li>
+        </ul>
+
+
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade in active" id="home">
+                <div class="jumbotron">
+                    <h1>欢迎！</h1>
+
+                    <p>这里是教程。</p>
+                    </p>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="upload">
+                <div class="jumbotron">
+                </div>
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="module" class="col-sm-2 control-label">选择模块</label>
+                        <div class="col-sm-1">
+                            <select class="form-control" id="module" >
+                                <option value="">master</option>
+                                <option value="">receiving</option>
+                                <option value="">check</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">选择库房</label>
+                        <div class="col-sm-2">
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="checkboxgz" value="warehouse"> 广州
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="checkboxguan" value="warehouse"> 固安
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="checkboxsz" value="warehouse"> 深圳
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="checkboxsh" value="warehouse"> 上海
+                            </label>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="col-sm-2 control-label">更新内容</label>
+                        <div class="col-sm-2">
+                            <textarea class="form-control" rows="3" id="description"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">选择文件</label>
+                        <div class="col-sm-2">
+                            <input type="file" name="uploadify" id="fileupload"/>
+                        </div>
+
+                        <div class="col-sm-offset-1 col-sm-2">
+                        <input type="button" class="btn btn-default" onclick="UploadFile()" value="上传"/>
+                        </div>
+                    </div>
+##                    <div class="form-group">
+##                        <div class="col-sm-offset-2 col-sm-3">
+##                            <input type="button" class="btn btn-default" onclick="UploadFile()" value="上传"/>
+##                        </div>
+##                    </div>
+                </form>
+            </div>
+            <div class="tab-pane fade" id="release">
+                <p>打包</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+    function UploadFile() {
+        //校验
+        var userName = $('#userName').val();
+        if (userName.replace(/\s/g, '') == '') {
+            alert("username can't be null");
+            return false;
+        }
+
+        var moduleName = $('#moduleName').val();
+        if (moduleName.replace(/\s/g, '') == '') {
+            alert("module can't be null");
+            return false;
+        }
+        var warehouse = new Array();
+
+        if ($('#gz').is(':checked')) {
+            warehouse.push('gz');
+        }
+        if ($('#guan').is(':checked')) {
+            warehouse.push('guan');
+        }
+        if ($('#sh').is(':checked')) {
+            warehouse.push('sh');
+        }
+        if (warehouse.length == 0) {
+            alert("warehouse can't be null");
+            return false;
+        }
+
+        document.getElementById("uploadForm").submit()
+
+        $("#fileupload").uploadify('upload', '*');
+
+    }
+
+    $(function () {
+        $("#fileupload").uploadify({
+            'height': 27,
+            'width': 80,
+            'buttonText': 'file',
+            'swf': '/uploadify/uploadify.swf',
+            'uploader': '/UploadAction',
+            //'cancelImg' : '/uploadify/uploadify-cancel.png',
+            'auto': false,
+            'multi': true,
+            'queueSizeLimit': 10,
+            'simUploadLimit': 10,
+            'onUploadStart': function (file) {
+
+                var warehouse = new Array();
+
+                if ($('#gz').is(':checked')) {
+                    warehouse.push('gz');
+                }
+                if ($('#guan').is(':checked')) {
+                    warehouse.push('guan');
+                }
+                if ($('#sh').is(':checked')) {
+                    warehouse.push('sh');
+                }
+
+                $("#fileupload").uploadify("settings", "formData", {
+                    'userName': $('#userName').val(),
+                    'description': $('#description').val(),
+                    'moduleName': $('#moduleName').val(),
+                    'warehouse': warehouse
+                });
+            },
+            'onCancel': function (event, queueID, fileObj) {
+                //alert('The file ' + file.name + '--' + file.size + ' was cancelled.');
+            },
+            //上传成功
+            'onUploadSuccess': function (file, data, response) {
+//                if (response == 'true') {
+//                    alert("success");
+//                } else {
+//                    alert("failed");
+//                }
+
+            },
+            //上传错误
+            'onUploadError': function (file, errorCode, errorMsg, errorString) {
+                alert("failed");
+            }
+        });
+    });
+
+</script>
+
+
+</body>
+</html>

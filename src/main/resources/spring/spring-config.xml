@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+    <!--引入属性文件important.properties-->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="ignoreResourceNotFound" value="true"/>
+        <property name="locations">
+            <list>
+                <value>classpath:important.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <context:component-scan base-package="com.jd" >
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:exclude-filter type="regex" expression="com.jd.josl.privilege.sdk4app.spring.LoginoutEndpoint"/>
+    </context:component-scan>
+
+    <context:annotation-config/>
+
+    <!--注册中心地址-->
+    <!-- <saf:registry protocol="${saf.registry.protocol}" address="${saf.registry.address}"/>-->
+    <!-- 指定发布的协议 -->
+    <!-- <saf:protocol id="mydubbo" name="dubbo"/>-->
+
+    <import resource="spring-mvc-config.xml" />
+</beans>

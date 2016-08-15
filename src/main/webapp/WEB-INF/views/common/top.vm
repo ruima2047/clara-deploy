@@ -1,0 +1,45 @@
+#set($layout = "layout/null.vm")
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>首页</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <link href="http://www.360buy.com/favicon.ico" rel="shortcut icon">
+    <link rel="stylesheet" type="text/css" href="#springUrl('/static/css/base.css')"/>
+    <link rel="stylesheet" type="text/css" href="#springUrl('/static/css/common.css')"/>
+    <link rel="stylesheet" type="text/css" href="#springUrl('/static/css/page.css')"/>
+    <script type="text/javascript" src="#springUrl('/static/js/jquery.js')"></script>
+    <script type="text/javascript" src="#springUrl('/static/js/main.js')"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $("#top-logout").click(function() {
+                var param="param="+(new Date()).getMilliseconds();
+                jQuery.ajax({
+                    type:'post',//可选get
+                    url:"#springUrl('/logout')"+"?"+param,
+                    data:param,
+                    dataType:'text',
+                    cache:false,
+                    success:function(msg){
+                        parent.location.reload();
+                    }
+                })
+            });
+        });
+    </script>
+</head>
+<body>
+<div id="header">
+    <div class="w clearfix">
+        <h1 id="logo"><a href="javascript:void(0);">商品资料库项目</a></h1>
+        <div id="userInfor">
+            <span class="mr20">欢迎您，$!{username}！</span>
+            <a id="top-logout" href="javascript:void(0);" target="main"><span class="ico ico-logoff"></span>[退出]</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

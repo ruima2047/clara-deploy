@@ -1,0 +1,75 @@
+#set($layout = "layout/null.vm")
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>首页</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <link href="http://www.360buy.com/favicon.ico" rel="shortcut icon">
+    <link rel="stylesheet" type="text/css" href="#springUrl('')/static/css/base.css"/>
+    <link rel="stylesheet" type="text/css" href="#springUrl('')/static/css/common.css"/>
+    <link rel="stylesheet" type="text/css" href="#springUrl('')/static/css/page.css"/>
+    <script type="text/javascript" src="#springUrl('')/static/js/jquery.js"></script>
+    <script type="text/javascript" src="#springUrl('')/static/js/main.js"></script>
+    <script type="text/javascript" src="#springUrl('')/static/js/jqModal.js"></script>
+    <script type="text/javascript" src="#springUrl('')/static/js/jqBtnSelect.js"></script>
+</head>
+<body style='overflow-x: hidden; overflow-y: auto;'>
+<div id="container" class="w-menu clearfix" style="margin-left: 20px">
+    <div id="menu">
+        <ul class="menu_lev1">
+            #foreach($menu1 in $treeResList)
+                <li>
+                    <a #if ((! $menu1.href) || ("$!menu1.href" == "")) href="#" #else href="#springUrl('')$!{menu1.href}" target="main" #end class="tit_lev1"><span>$!{menu1.text}</span></a>
+                    #if(${menu1.children})
+                        <ul class="menu_lev2">
+                            #foreach($menu2 in ${menu1.children})
+                                <li>
+                                    <a #if ((! $menu2.href) || ("$!menu2.href" == "")) href="#" #else href="#springUrl('')$!{menu2.href}" target="main" #end class="tit_lev2"><span>$!{menu2.text}</span></a>
+                                    #if(${menu2.children})
+                                        <ul class="menu_lev3">
+                                            #foreach($menu3 in ${menu2.children})
+                                                <li><a href="#springUrl('')$!{menu3.href}" class="tit_lev3" target="main"><span>$!{menu3.text}</span></a></li>
+                                            #end
+                                        </ul>
+                                    #end
+                                </li>
+                            #end
+                        </ul>
+                    #end
+                </li>
+            #end
+##            #foreach($item in $resources)
+##                #if($item.levelNo == 1)
+##                    <li><a href="$item.resourceUrl" class="tit_lev1" target="main">$item.resourceName</a>
+##                        #if($item.hasChild == 1)
+##                            <ul class="menu_lev2">
+##                                #foreach($item2 in $resources)
+##                                    #if($item.resourceCode == $item2.parentCode)
+##                                        <li><a href="$item2.resourceUrl" class="tit_lev2" target="main">$item2.resourceName</a>
+##                                            #if($item2.hasChild == 1)
+##                                                <ul class="menu_lev3">
+##                                                    #foreach($item3 in $resources)
+##                                                        #if($item2.resourceCode == $item3.parentCode)
+##                                                            <li><a href="$item3.resourceUrl" class="tit_lev3" target="main">$item3.resourceName</a></li>
+##                                                        #end
+##                                                    #end
+##                                                </ul>
+##                                            #end
+##                                        </li>
+##                                    #end
+##                                #end
+##                            </ul>
+##                        #end
+##                    </li>
+##                #end
+##            #end
+        </ul>
+    </div>
+</div>
+</body>
+</html>
+

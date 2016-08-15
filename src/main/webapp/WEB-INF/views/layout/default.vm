@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>dll上线</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="expires" content="0">
+    <link href="http://www.360buy.com/favicon.ico" rel="shortcut icon">
+    <link rel="stylesheet" type="text/css" href="#springUrl('/static/css/base.css')"/>
+    <link rel="stylesheet" type="text/css" href="#springUrl('/static/css/common.css')"/>
+    <link rel="stylesheet" type="text/css" href="#springUrl('/static/css/page.css')"/>
+    <script type="text/javascript" src="#springUrl('/static/js/jquery.js')"></script>
+    <script type="text/javascript" src="#springUrl('/static/js/main.js')"></script>
+    <script type="text/javascript" src="#springUrl('/static/js/jqModal.js')"></script>
+    <script type="text/javascript" src="#springUrl('/static/js/jqBtnSelect.js')"></script>
+    <script type="text/javascript" src="#springUrl('/static/js/common/common.js')"></script>
+    <script type="text/javascript" src="#springUrl('/static/js/json2.js')"></script>
+    <!-- easyui start-->
+    <link rel="stylesheet" type="text/css" href="#springUrl('/static/css/easyui/easyui.css')"/>
+    <link rel="stylesheet" type="text/css" href="#springUrl('/static/css/easyui/icon.css')"/>
+    <script type="text/javascript" src="#springUrl('/static/js/easyui/jquery.easyui.min.js')"></script>
+    <script type="text/javascript" src="#springUrl('/static/js/easyui/locale/easyui-lang-zh_CN.js')"></script>
+    <!--easyui显示单元格内容-->
+    <script type="text/javascript" src="#springUrl('')/js/common/jquery.easyui.showCell.js"></script>
+    <!--easyui end-->
+    <!--验证js start-->
+    <script type="text/javascript" src="#springUrl('')/static/js/jquery.metadata.js"></script>
+    <script type="text/javascript" src="#springUrl('')/static/js/jquery.validate.js"></script>
+    <script type="text/javascript" src="#springUrl('')/static/js/jquery.cluetip.js"></script>
+    <script type="text/javascript" src="#springUrl('')/static/js/jquery.validate_msg_cn.js"></script>
+    <script type="text/javascript" src="#springUrl('')/static/js/validate_customer_extend.js"></script>
+    <!--验证js end-->
+    <script type="text/javascript">
+        var springUrl = "#springUrl('')";   //路径全局变量
+    </script>
+</head>
+<body style="min-height: 100%;">
+<div id="container" class="w-frame clearfix">
+    <div id="content-frame">
+        $screen_content
+    </div>
+</div>
+</body>
+</html>
+
