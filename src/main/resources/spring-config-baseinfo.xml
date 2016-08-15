@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-4.2.xsd" default-autowire="byName">
+
+    <bean id="baseInfoMap" class="java.util.HashMap">
+        <constructor-arg>
+            <map value-type="java.lang.Object">
+                <entry key="gz" value-ref="gzBaseInfo"/>
+                <entry key="guan" value-ref="guanBaseInfo"/>
+                <entry key="sh" value-ref="shBaseInfo"/>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="gzBaseInfo" class="com.jd.deploy.domain.BaseInfo">
+        <property name="appName" value="${gzAppName}"/>
+        <property name="releaseURL" value="${gzReleaseURL}"/>
+        <property name="applicationStart" value="${gzApplicationStart}"/>
+        <property name="shortcutIcon" value="${gzShortcutIcon}"/>
+        <property name="rootPath" value="${gzRootPath}"/>
+    </bean>
+
+    <bean id="guanBaseInfo" class="com.jd.deploy.domain.BaseInfo">
+        <property name="appName" value="${guanAppName}"/>
+        <property name="releaseURL" value="${guanReleaseURL}"/>
+        <property name="applicationStart" value="${guanApplicationStart}"/>
+        <property name="shortcutIcon" value="${guanShortcutIcon}"/>
+        <property name="rootPath" value="${guanRootPath}"/>
+    </bean>
+
+    <bean id="shBaseInfo" class="com.jd.deploy.domain.BaseInfo">
+        <property name="appName" value="${shAppName}"/>
+        <property name="releaseURL" value="${shReleaseURL}"/>
+        <property name="applicationStart" value="${shApplicationStart}"/>
+        <property name="shortcutIcon" value="${shShortcutIcon}"/>
+        <property name="rootPath" value="${shRootPath}"/>
+    </bean>
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:baseInfo.properties</value>
+            </list>
+        </property>
+    </bean>
+
+</beans>

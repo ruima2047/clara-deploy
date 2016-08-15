@@ -49,16 +49,25 @@
                 <div class="jumbotron">
                 </div>
                 <form class="form-horizontal" role="form">
+
+                    <div class="form-group">
+                        <label for="userName" class="col-sm-2 control-label">用户名</label>
+                        <div class="col-sm-1">
+                            <input type="text" class="form-control" id="userName">
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label for="module" class="col-sm-2 control-label">选择模块</label>
                         <div class="col-sm-1">
                             <select class="form-control" id="module" >
-                                <option value="">master</option>
-                                <option value="">receiving</option>
-                                <option value="">check</option>
+                                <option value="Master">master</option>
+                                <option value="Receiving">receiving</option>
+                                <option value="Check">check</option>
                             </select>
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label class="col-sm-2 control-label">选择库房</label>
                         <div class="col-sm-2">
@@ -75,7 +84,6 @@
                                 <input type="checkbox" id="checkboxsh" value="warehouse"> 上海
                             </label>
                         </div>
-
                     </div>
                     <div class="form-group">
                         <label for="description" class="col-sm-2 control-label">更新内容</label>
@@ -93,11 +101,6 @@
                         <input type="button" class="btn btn-default" onclick="UploadFile()" value="上传"/>
                         </div>
                     </div>
-##                    <div class="form-group">
-##                        <div class="col-sm-offset-2 col-sm-3">
-##                            <input type="button" class="btn btn-default" onclick="UploadFile()" value="上传"/>
-##                        </div>
-##                    </div>
                 </form>
             </div>
             <div class="tab-pane fade" id="release">
@@ -118,31 +121,33 @@
             return false;
         }
 
-        var moduleName = $('#moduleName').val();
-        if (moduleName.replace(/\s/g, '') == '') {
+        var module = $('#module').val();
+        if (module.replace(/\s/g, '') == '') {
             alert("module can't be null");
             return false;
         }
         var warehouse = new Array();
 
-        if ($('#gz').is(':checked')) {
+        if ($('#checkboxgz').is(':checked')) {
             warehouse.push('gz');
         }
-        if ($('#guan').is(':checked')) {
+        if ($('#checkboxguan').is(':checked')) {
             warehouse.push('guan');
         }
-        if ($('#sh').is(':checked')) {
+        if ($('#checkboxsh').is(':checked')) {
             warehouse.push('sh');
+        }
+        if ($('#checkboxsz').is(':checked')) {
+            warehouse.push('sz');
         }
         if (warehouse.length == 0) {
             alert("warehouse can't be null");
             return false;
         }
 
-        document.getElementById("uploadForm").submit()
+//        document.getElementById("description").submit()
 
         $("#fileupload").uploadify('upload', '*');
-
     }
 
     $(function () {
@@ -151,7 +156,7 @@
             'width': 80,
             'buttonText': 'file',
             'swf': '/uploadify/uploadify.swf',
-            'uploader': '/UploadAction',
+            'uploader': '/upload',
             //'cancelImg' : '/uploadify/uploadify-cancel.png',
             'auto': false,
             'multi': true,
@@ -161,20 +166,23 @@
 
                 var warehouse = new Array();
 
-                if ($('#gz').is(':checked')) {
+                if ($('#checkboxgz').is(':checked')) {
                     warehouse.push('gz');
                 }
-                if ($('#guan').is(':checked')) {
+                if ($('#checkboxguan').is(':checked')) {
                     warehouse.push('guan');
                 }
-                if ($('#sh').is(':checked')) {
+                if ($('#checkboxsh').is(':checked')) {
                     warehouse.push('sh');
+                }
+                if ($('#checkboxsz').is(':checked')) {
+                    warehouse.push('sz');
                 }
 
                 $("#fileupload").uploadify("settings", "formData", {
                     'userName': $('#userName').val(),
                     'description': $('#description').val(),
-                    'moduleName': $('#moduleName').val(),
+                    'module': $('#module').val(),
                     'warehouse': warehouse
                 });
             },
