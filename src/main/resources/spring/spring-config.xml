@@ -8,15 +8,7 @@
             http://www.springframework.org/schema/context
             http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
-    <!--引入属性文件important.properties-->
-    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="ignoreResourceNotFound" value="true"/>
-        <property name="locations">
-            <list>
-                <value>classpath:important.properties</value>
-            </list>
-        </property>
-    </bean>
+
 
     <context:component-scan base-package="com.jd" >
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
@@ -30,5 +22,6 @@
     <!-- 指定发布的协议 -->
     <!-- <saf:protocol id="mydubbo" name="dubbo"/>-->
 
-    <import resource="spring-mvc-config.xml" />
+    <import resource="classpath:spring/spring-mvc-config.xml" />
+    <import resource="classpath:spring/spring-config-baseinfo.xml" />
 </beans>

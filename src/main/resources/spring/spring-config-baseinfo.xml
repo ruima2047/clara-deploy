@@ -38,7 +38,8 @@
         <property name="rootPath" value="${shRootPath}"/>
     </bean>
 
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <!--引入属性文件important.properties-->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
                 <value>classpath:baseInfo.properties</value>
