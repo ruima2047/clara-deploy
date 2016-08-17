@@ -9,7 +9,7 @@
     <script src="#springUrl('')/bootstrap/js/fileinput.min.js"></script>
     <link href="#springUrl('')/bootstrap/css/fileinput.min.css" type="text/css"/>
 
-    <link rel="stylesheet" href="#springUrl('')/uploadify/uploadify.css" />
+    <link rel="stylesheet" href="#springUrl('')/uploadify/uploadify.css"/>
     <script src="#springUrl('')/uploadify/jquery.uploadify.min.js"></script>
     <style type="text/css">
 
@@ -46,8 +46,7 @@
                 </div>
             </div>
             <div class="tab-pane fade" id="upload">
-                <div class="jumbotron">
-                </div>
+                <div class="jumbotron"></div>
                 <form class="form-horizontal" role="form">
 
                     <div class="form-group">
@@ -60,7 +59,7 @@
                     <div class="form-group">
                         <label for="module" class="col-sm-2 control-label">选择模块</label>
                         <div class="col-sm-1">
-                            <select class="form-control" id="module" >
+                            <select class="form-control" id="module">
                                 <option value="Master">master</option>
                                 <option value="Receiving">receiving</option>
                                 <option value="Check">check</option>
@@ -86,9 +85,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="description" class="col-sm-2 control-label">更新内容</label>
+                        <label for="log" class="col-sm-2 control-label">更新内容</label>
                         <div class="col-sm-2">
-                            <textarea class="form-control" rows="3" id="description"></textarea>
+                            <textarea class="form-control" rows="3" id="log"></textarea>
                         </div>
                     </div>
                     <div class="form-group">
@@ -98,20 +97,76 @@
                         </div>
 
                         <div class="col-sm-offset-1 col-sm-2">
-                        <input type="button" class="btn btn-default" onclick="UploadFile()" value="上传"/>
+                            <input type="button" class="btn btn-default" onclick="UploadFile()" value="上传"/>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="tab-pane fade" id="release">
-                <p>打包</p>
+                <div class="jumbotron"></div>
+                <form class="form-horizontal" role="form">
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">选择库房</label>
+                        <div class="col-sm-2">
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="gzRelease" value="warehouse"> 广州
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="guanRelease" value="warehouse"> 固安
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="szRelease" value="warehouse"> 深圳
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" id="shRelease" value="warehouse"> 上海
+                            </label>
+                        </div>
+                        <input type="button" class="btn btn-default" onclick="Release()" value="打包"/>
+                    </div>
+
+##                    <div class="col-sm-offset-2 col-sm-1">
+##                        <input type="button" class="btn btn-default" onclick="Release()" value="打包"/>
+##                    </div>
             </div>
+            </form>
         </div>
     </div>
+</div>
 
 </div>
 
 <script type="text/javascript">
+    function Release() {
+
+        var warehouse = new Array();
+        if ($('#gzRelease').is(':checked')) {
+            warehouse.push('gz');
+        }
+        if ($('#guanRelease').is(':checked')) {
+            warehouse.push('guan');
+        }
+        if ($('#checkboxsh').is(':checked')) {
+            warehouse.push('sh');
+        }
+        if ($('#szRelease').is(':checked')) {
+            warehouse.push('sz');
+        }
+        if (warehouse.length == 0) {
+            alert("warehouse can't be null");
+            return false;
+        }
+        $.post("/release",
+                {
+                    'warehouse': warehouse
+                },
+                function (data, status) {
+                });
+
+//        document.getElementById("description").submit()
+
+    }
+
 
     function UploadFile() {
         //校验
@@ -120,14 +175,12 @@
             alert("username can't be null");
             return false;
         }
-
         var module = $('#module').val();
         if (module.replace(/\s/g, '') == '') {
             alert("module can't be null");
             return false;
         }
         var warehouse = new Array();
-
         if ($('#checkboxgz').is(':checked')) {
             warehouse.push('gz');
         }
@@ -144,6 +197,18 @@
             alert("warehouse can't be null");
             return false;
         }
+        var log = $('#log').val();
+        if (log.replace(/\s/g, '') == '') {
+            alert("description can't be null");
+            return false;
+        }
+        $.post("/log",
+                {
+                    'warehouse': warehouse,
+                    'description': log
+                },
+                function (data, status) {
+                });
 
 //        document.getElementById("description").submit()
 
@@ -181,7 +246,7 @@
 
                 $("#fileupload").uploadify("settings", "formData", {
                     'userName': $('#userName').val(),
-                    'description': $('#description').val(),
+                    'log': $('#log').val(),
                     'module': $('#module').val(),
                     'warehouse': warehouse
                 });

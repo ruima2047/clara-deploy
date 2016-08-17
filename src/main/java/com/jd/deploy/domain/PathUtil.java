@@ -7,6 +7,13 @@ import java.io.File;
  */
 public class PathUtil {
 
+    /**
+     * 获取路径
+     * ex.E:\export\Update\sh\PC
+     * @param root
+     * @param more
+     * @return
+     */
     public static String getPath(String root, String... more) {
 //        String separator = "\\";
         StringBuilder path = new StringBuilder(root);
@@ -17,6 +24,13 @@ public class PathUtil {
         return path.toString();
     }
 
+    /**
+     * 获取相对路径
+     * ex. DLL\Check\
+     * @param path
+     * @param fileName
+     * @return
+     */
     public static String getRelativePath(String path, String fileName) {
 //        String separator = "\\";
 

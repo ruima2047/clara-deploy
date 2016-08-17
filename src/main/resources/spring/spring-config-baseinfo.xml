@@ -4,6 +4,10 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-4.2.xsd" default-autowire="byName">
 
+<bean id = "commonInfo" class="com.jd.deploy.domain.CommonInfo">
+    <property name="logPath" value="${logPath}"/>
+</bean>
+
     <bean id="baseInfoMap" class="java.util.HashMap">
         <constructor-arg>
             <map value-type="java.lang.Object">
