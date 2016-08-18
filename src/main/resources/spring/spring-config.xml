@@ -24,4 +24,5 @@
 
     <import resource="classpath:spring/spring-mvc-config.xml" />
     <import resource="classpath:spring/spring-config-baseinfo.xml" />
+    <import resource="classpath:spring/spring-config-jsf-client.xml" />
 </beans>
