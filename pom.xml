@@ -192,100 +192,116 @@
     </dependencies>
 
     <build>
-
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.1</version>
                 <configuration>
                     <source>${jdk.version}</source>
                     <target>${jdk.version}</target>
+                    <encoding>UTF-8</encoding>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.codehaus.plexus</groupId>
+                        <artifactId>plexus-compiler-javac</artifactId>
+                        <version>1.8.1</version>
+                    </dependency>
+                </dependencies>
             </plugin>
-
             <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>9.2.11.v20150529</version>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.2</version>
                 <configuration>
-                    <scanIntervalSeconds>10</scanIntervalSeconds>
-                    <webApp>
-                        <contextPath>/spring2</contextPath>
-                    </webApp>
+                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>2.5.2</version>
+                <configuration>
+                    <findbugsXmlOutput>true</findbugsXmlOutput>
+                    <xmlOutput>true</xmlOutput>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-eclipse-plugin</artifactId>
-                <version>2.9</version>
+                <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <downloadSources>true</downloadSources>
-                    <downloadJavadocs>true</downloadJavadocs>
-                    <wtpversion>2.0</wtpversion>
-                    <wtpContextName>spring2</wtpContextName>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>2.4</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>dashboard-maven-plugin</artifactId>
+                <version>1.0.0-beta-1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>2.7.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-archetype-plugin</artifactId>
+                <version>2.0-alpha-4</version>
+            </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <finalName>clara-deploy</finalName>
+        <!--<plugins>-->
+            <!--<plugin>-->
+                <!--<groupId>org.apache.maven.plugins</groupId>-->
+                <!--<artifactId>maven-compiler-plugin</artifactId>-->
+                <!--<version>2.3.1</version>-->
+                <!--<configuration>-->
+                    <!--<source>${jdk.version}</source>-->
+                    <!--<target>${jdk.version}</target>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
 
+            <!--<plugin>-->
+                <!--<groupId>org.eclipse.jetty</groupId>-->
+                <!--<artifactId>jetty-maven-plugin</artifactId>-->
+                <!--<version>9.2.11.v20150529</version>-->
+                <!--<configuration>-->
+                    <!--<scanIntervalSeconds>10</scanIntervalSeconds>-->
+                    <!--<webApp>-->
+                        <!--<contextPath>/spring</contextPath>-->
+                    <!--</webApp>-->
+                <!--</configuration>-->
+            <!--</plugin>-->
+
+            <!--&lt;!&ndash;<plugin>&ndash;&gt;-->
+                <!--&lt;!&ndash;<groupId>org.apache.maven.plugins</groupId>&ndash;&gt;-->
+                <!--&lt;!&ndash;<artifactId>maven-eclipse-plugin</artifactId>&ndash;&gt;-->
+                <!--&lt;!&ndash;<version>2.9</version>&ndash;&gt;-->
+                <!--&lt;!&ndash;<configuration>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<downloadSources>true</downloadSources>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<downloadJavadocs>true</downloadJavadocs>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<wtpversion>2.0</wtpversion>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<wtpContextName>spring2</wtpContextName>&ndash;&gt;-->
+                <!--&lt;!&ndash;</configuration>&ndash;&gt;-->
+            <!--&lt;!&ndash;</plugin>&ndash;&gt;-->
+
+        <!--</plugins>-->
+        <!--<resources>-->
+            <!--<resource>-->
+                <!--<directory>src/main/resources</directory>-->
+                <!--<filtering>true</filtering>-->
+            <!--</resource>-->
+        <!--</resources>-->
     </build>
-
-    <profiles>
-        <profile>
-            <id>deploy-test</id>
-            <properties>
-
-                <gz.clara.deploy.AppName>WMS3</gz.clara.deploy.AppName>
-                <gz.clara.deploy.ReleaseURL>http://gz.ao1.jd.com/winapp/</gz.clara.deploy.ReleaseURL>
-                <gz.clara.deploy.ApplicationStart>JD.WMSAO1.WPFAPP.exe</gz.clara.deploy.ApplicationStart>
-                <gz.clara.deploy.ShortcutIcon>null</gz.clara.deploy.ShortcutIcon>
-                <gz.clara.deploy.ReleasePath>E:\\export\\Update\\gz\\PC</gz.clara.deploy.ReleasePath>
-
-                <guan.clara.deploy.AppName>WMS3</guan.clara.deploy.AppName>
-                <guan.clara.deploy.ReleaseURL>http://guan.ao1.jd.com/winapp/</guan.clara.deploy.ReleaseURL>
-                <guan.clara.deploy.ApplicationStart>JD.WMSAO1.WPFAPP.exe</guan.clara.deploy.ApplicationStart>
-                <guan.clara.deploy.ShortcutIcon>null</guan.clara.deploy.ShortcutIcon>
-                <guan.clara.deploy.ReleasePath>E:\\export\\Update\\guan\\PC</guan.clara.deploy.ReleasePath>
-
-                <sh.clara.deploy.AppName>WMS3</sh.clara.deploy.AppName>
-                <sh.clara.deploy.ReleaseURL>http://ao1.sh.jd.com/winapp</sh.clara.deploy.ReleaseURL>
-                <sh.clara.deploy.ApplicationStart>JD.WMSAO1.WPFAPP.exe</sh.clara.deploy.ApplicationStart>
-                <sh.clara.deploy.ShortcutIcon>null</sh.clara.deploy.ShortcutIcon>
-                <sh.clara.deploy.ReleasePath>E:\\export\\Update\\sh\\PC</sh.clara.deploy.ReleasePath>
-
-                <clara.deploy.traceLogPath>E:\\export\\Update\\Logs</clara.deploy.traceLogPath>
-
-            </properties>
-        </profile>
-
-        <profile>
-            <id>deploy-web</id>
-            <properties>
-
-                <gz.clara.deploy.AppName>WMS3</gz.clara.deploy.AppName>
-                <gz.clara.deploy.ReleaseURL>http://gz.ao1.jd.com/winapp/</gz.clara.deploy.ReleaseURL>
-                <gz.clara.deploy.ApplicationStart>JD.WMSAO1.WPFAPP.exe</gz.clara.deploy.ApplicationStart>
-                <gz.clara.deploy.ShortcutIcon>null</gz.clara.deploy.ShortcutIcon>
-                <gz.clara.deploy.ReleasePath>/export/Update/gz/PC</gz.clara.deploy.ReleasePath>
-
-                <guan.clara.deploy.AppName>WMS3</guan.clara.deploy.AppName>
-                <guan.clara.deploy.ReleaseURL>http://guan.ao1.jd.com/winapp/</guan.clara.deploy.ReleaseURL>
-                <guan.clara.deploy.ApplicationStart>JD.WMSAO1.WPFAPP.exe</guan.clara.deploy.ApplicationStart>
-                <guan.clara.deploy.ShortcutIcon>null</guan.clara.deploy.ShortcutIcon>
-                <guan.clara.deploy.ReleasePath>/export/Update/guan/PC</guan.clara.deploy.ReleasePath>
-
-                <sh.clara.deploy.AppName>WMS3</sh.clara.deploy.AppName>
-                <sh.clara.deploy.ReleaseURL>http://ao1.sh.jd.com/winapp</sh.clara.deploy.ReleaseURL>
-                <sh.clara.deploy.ApplicationStart>JD.WMSAO1.WPFAPP.exe</sh.clara.deploy.ApplicationStart>
-                <sh.clara.deploy.ShortcutIcon>null</sh.clara.deploy.ShortcutIcon>
-                <sh.clara.deploy.ReleasePath>/export/Update/sh/PC</sh.clara.deploy.ReleasePath>
-
-                <clara.deploy.traceLogPath>/export/Update/Logs</clara.deploy.traceLogPath>
-
-            </properties>
-        </profile>
-    </profiles>
 
 </project>
