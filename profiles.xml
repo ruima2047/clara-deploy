@@ -56,6 +56,12 @@
                 <sh.clara.deploy.ShortcutIcon>null</sh.clara.deploy.ShortcutIcon>
                 <sh.clara.deploy.ReleasePath>/export/Update/sh/PC</sh.clara.deploy.ReleasePath>
 
+                <sz.clara.deploy.AppName>WMS3</sz.clara.deploy.AppName>
+                <sz.clara.deploy.ReleaseURL>http://sz.ao1.jd.com/winapp/</sz.clara.deploy.ReleaseURL>
+                <sz.clara.deploy.ApplicationStart>JD.WMSAO1.WPFAPP.exe</sz.clara.deploy.ApplicationStart>
+                <sz.clara.deploy.ShortcutIcon>null</sz.clara.deploy.ShortcutIcon>
+                <sz.clara.deploy.ReleasePath>/export/Update/sz/PC</sz.clara.deploy.ReleasePath>
+
                 <clara.deploy.traceLogPath>/export/Update/Logs</clara.deploy.traceLogPath>
 
             </properties>

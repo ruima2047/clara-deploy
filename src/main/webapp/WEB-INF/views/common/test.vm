@@ -60,9 +60,30 @@
                         <label for="module" class="col-sm-2 control-label">选择模块</label>
                         <div class="col-sm-1">
                             <select class="form-control" id="module">
-                                <option value="Master">master</option>
-                                <option value="Receiving">receiving</option>
-                                <option value="Check">check</option>
+                                <option value="CenterPrint">CenterPrint</option>
+                                <option value="Check">Check</option>
+                                <option value="Checkstock">Checkstock</option>
+                                <option value="InnerCheck">InnerCheck</option>
+                                <option value="InnerLocate">InnerLocate</option>
+                                <option value="InnerLocate">InnerLocate</option>
+                                <option value="InnerShip">InnerShip</option>
+                                <option value="InnerTask">InnerTask</option>
+                                <option value="InnerWave">InnerWave</option>
+                                <option value="Master">Master</option>
+                                <option value="MoveStock">MoveStock</option>
+
+                                <option value="OTM">OTM</option>
+                                <option value="pack">pack</option>
+                                <option value="Picking">Picking</option>
+                                <option value="Putaway">Putaway</option>
+                                <option value="Receiving">Receiving</option>
+                                <option value="ReceScheduling">ReceScheduling</option>
+                                <option value="Shipment">Shipment</option>
+                                <option value="SmartQuery/Reports">SmartQuery</option>
+                                <option value="SmartQueryNew/Reports">SmartQueryNew</option>
+                                <option value="TaskAssign">TaskAssign</option>
+                                <option value="Wave">Wave</option>
+
                             </select>
                         </div>
                     </div>
@@ -264,9 +285,9 @@
 
             },
             //上传错误
-            'onUploadError': function (file, errorCode, errorMsg, errorString) {
-                alert("failed");
-            }
+//            'onUploadError': function (file, errorCode, errorMsg, errorString) {
+//                alert("failed");
+//            }
         });
     });
 

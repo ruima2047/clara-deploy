@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-           http://www.springframework.org/schema/beans/spring-beans-4.2.xsd" default-autowire="byName">
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-3.1.xsd" default-autowire="byName">
 
 <bean id = "commonInfo" class="com.jd.deploy.domain.CommonInfo">
     <property name="logPath" value="${logPath}"/>
@@ -14,6 +15,7 @@
                 <entry key="gz" value-ref="gzBaseInfo"/>
                 <entry key="guan" value-ref="guanBaseInfo"/>
                 <entry key="sh" value-ref="shBaseInfo"/>
+                <entry key="sz" value-ref="szBaseInfo"/>
             </map>
         </constructor-arg>
     </bean>
@@ -40,6 +42,14 @@
         <property name="applicationStart" value="${shApplicationStart}"/>
         <property name="shortcutIcon" value="${shShortcutIcon}"/>
         <property name="rootPath" value="${shRootPath}"/>
+    </bean>
+
+    <bean id="szBaseInfo" class="com.jd.deploy.domain.BaseInfo">
+        <property name="appName" value="${szAppName}"/>
+        <property name="releaseURL" value="${szReleaseURL}"/>
+        <property name="applicationStart" value="${szApplicationStart}"/>
+        <property name="shortcutIcon" value="${szShortcutIcon}"/>
+        <property name="rootPath" value="${szRootPath}"/>
     </bean>
 
     <!--引入属性文件important.properties-->

@@ -3,6 +3,7 @@ package com.jd.deploy.controller;
 import com.jd.deploy.domain.BaseInfo;
 import com.jd.deploy.domain.PathUtil;
 import com.jd.deploy.domain.ReleaseFileInfo;
+import org.apache.commons.io.FileUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -208,12 +209,16 @@ public class ReleaseController {
                 throw new RuntimeException("创建文件夹失败");
             }
         }
+        File destFile = new File(PathUtil.getPath(path, file.getName()));
         FileChannel inputChannel = null;
         FileChannel outputChannel = null;
         try {
+//            FileUtils.copyFile(file,new File(PathUtil.getPath(path, file.getName())),true);
+
             inputChannel = new FileInputStream(file).getChannel();
-            outputChannel = new FileOutputStream(new File(PathUtil.getPath(path, file.getName()))).getChannel();
+            outputChannel = new FileOutputStream(destFile).getChannel();
             outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
+            destFile.setLastModified(file.lastModified());
         } catch (IOException io) {
             io.printStackTrace();
         } finally {
