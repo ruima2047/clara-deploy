@@ -154,7 +154,6 @@ public class ReleaseController {
                 fileEle.addAttribute("size", releaseFileInfo.getSize());
                 fileEle.addAttribute("md5", releaseFileInfo.getMd5());
             }
-            System.out.println(documentEle.asXML());
             OutputFormat outputFormat = OutputFormat.createPrettyPrint();
             outputFormat.setEncoding("UTF-8");
             XMLWriter xmlWriter = new XMLWriter(
@@ -213,8 +212,6 @@ public class ReleaseController {
         FileChannel inputChannel = null;
         FileChannel outputChannel = null;
         try {
-//            FileUtils.copyFile(file,new File(PathUtil.getPath(path, file.getName())),true);
-
             inputChannel = new FileInputStream(file).getChannel();
             outputChannel = new FileOutputStream(destFile).getChannel();
             outputChannel.transferFrom(inputChannel, 0, inputChannel.size());
