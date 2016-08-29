@@ -38,4 +38,17 @@ public class PathUtil {
         return relativePath.append(fileName).append(File.separator).toString();
     }
 
+    public static String separatorUniform(String original) {
+        char []originalchars = original.toCharArray();
+        char []newchars = new char[original.length()];
+        for(int i = 0; i < original.length(); i++) {
+            if(originalchars[i] == '/') {
+                newchars[i] = '\\';
+                continue;
+            }
+            newchars[i] = originalchars[i];
+        }
+        return new String(newchars);
+    }
+
 }

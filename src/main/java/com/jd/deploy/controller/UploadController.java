@@ -33,7 +33,8 @@ public class UploadController {
                          @RequestParam("userName") String userName,
                          @RequestParam("module") String module,
                          @RequestParam("warehouse") List<String> warehouseList,
-                         @RequestParam("Filedata") MultipartFile file) {
+                         @RequestParam("Filedata") MultipartFile file,
+                         HttpServletResponse response) {
         OutputStream os = null;
         InputStream is = null;
         try {
@@ -54,9 +55,11 @@ public class UploadController {
                 os.close();
                 is.close();
                 logger.info("库房："+warehouse+" 用户："+userName+" 文件："+file.getOriginalFilename()+" 路径："+uploadPath);
+                response.setStatus(200);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
+            response.setStatus(500 );
         } finally {
             if(is != null)
                 try{

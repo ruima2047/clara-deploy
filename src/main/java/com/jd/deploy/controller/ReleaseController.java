@@ -182,7 +182,8 @@ public class ReleaseController {
                     generateFileList(file, PathUtil.getRelativePath(relativePath, file.getName()));
                 } else {
                     ReleaseFileInfo releaseFileInfo = new ReleaseFileInfo();
-                    releaseFileInfo.setName(relativePath.concat(file.getName()));
+//                    releaseFileInfo.setName(PathUtil.separatorUniform(relativePath).concat(file.getName()));
+                    releaseFileInfo.setName(relativePath.replace('/','\\').concat(file.getName()));
                     releaseFileInfo.setDate(simpleDateFormat.format(new Date(file.lastModified())));
                     releaseFileInfo.setSize(Long.toString(file.length() >> 10));
                     releaseFileInfo.setMd5(getMd5ByFile(file));
