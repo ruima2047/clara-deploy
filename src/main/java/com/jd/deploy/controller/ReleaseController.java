@@ -3,7 +3,7 @@ package com.jd.deploy.controller;
 import com.jd.deploy.domain.BaseInfo;
 import com.jd.deploy.domain.PathUtil;
 import com.jd.deploy.domain.ReleaseFileInfo;
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.math.BigInteger;
 import java.nio.MappedByteBuffer;
@@ -47,7 +48,7 @@ public class ReleaseController {
     private BaseInfo baseInfo;
 
     @RequestMapping(value = "/release", method = RequestMethod.POST)
-    public void release(HttpServletRequest request,@RequestParam("warehouse[]") List<String> warehouseList) {
+    public void release(HttpServletRequest request,@RequestParam("warehouse[]") List<String> warehouseList,HttpServletResponse response) {
         try {
             //initialize settings
             releaseFileInfoList = new ArrayList<ReleaseFileInfo>();
@@ -76,8 +77,10 @@ public class ReleaseController {
                     }
                     versionNum = lineTxt;
                     while ((lineTxt = bufferedReader.readLine()) != null) {
-                        updateLog += Integer.toString(i) + ". " + lineTxt + "\n";
-                        i++;
+                        if(!StringUtils.isBlank(lineTxt)) {
+                            updateLog += Integer.toString(i) + ". " + lineTxt + "\n";
+                            i++;
+                        }
                     }
                 } catch (Exception e) {
 
@@ -115,11 +118,30 @@ public class ReleaseController {
                 bw.write(updateVersionNum(versionNum));
                 bw.close();
                 fw.close();
-            }
 
+            }
+            response.setStatus(200);
+            PrintWriter pw = response.getWriter();
+            pw.write("success");
+            System.out.println("it's a test");
         } catch (Exception e) {
             e.printStackTrace();
 
+        } finally {
+//            if(is != null)
+//                try{
+//                    is.close();
+//                }
+//                catch(IOException e){
+//                    throw new RuntimeException(e);
+//                }
+//            if(os != null)
+//                try{
+//                    os.close();
+//                }
+//                catch(IOException e){
+//                    throw new RuntimeException(e);
+//                }
         }
     }
     /**
@@ -184,7 +206,8 @@ public class ReleaseController {
                     ReleaseFileInfo releaseFileInfo = new ReleaseFileInfo();
 //                    releaseFileInfo.setName(PathUtil.separatorUniform(relativePath).concat(file.getName()));
                     releaseFileInfo.setName(relativePath.replace('/','\\').concat(file.getName()));
-                    releaseFileInfo.setDate(simpleDateFormat.format(new Date(file.lastModified())));
+                    //linux文件系统时间精度问题
+                    releaseFileInfo.setDate(simpleDateFormat.format(new Date(file.lastModified() - 2000)));
                     releaseFileInfo.setSize(Long.toString(file.length() >> 10));
                     releaseFileInfo.setMd5(getMd5ByFile(file));
                     releaseFileInfoList.add(releaseFileInfo);

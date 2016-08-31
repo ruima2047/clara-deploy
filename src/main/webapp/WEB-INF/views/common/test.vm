@@ -181,7 +181,11 @@
                 {
                     'warehouse': warehouse
                 },
-                function (data, status) {
+                function (response) {
+                    if(response == "success")
+                        alert("success!");
+                    else
+                        alert("failed!");
                 });
 
 //        document.getElementById("description").submit()
@@ -277,12 +281,9 @@
             },
             //上传成功
             'onUploadSuccess': function (file, data, response) {
-//                if (response == 'true') {
-//                    alert("success");
-//                } else {
-//                    alert("failed");
-//                }
-
+                if (!response) {
+                    alert("failed");
+                }
             },
             //上传错误
 //            'onUploadError': function (file, errorCode, errorMsg, errorString) {

@@ -40,7 +40,6 @@ public class UploadController {
         try {
             for (String warehouse : warehouseList) {
                 BaseInfo baseInfo = (BaseInfo) baseInfoMap.get(warehouse);
-
                 //ex. E:\export\Update\guan\PC\Release\DLL\Check
                 String uploadPath = PathUtil.getPath(baseInfo.getRootPath(), "Release", "DLL", module);
                 //ex. E:\export\Update\guan\PC\Release\DLL\Check\JD.WMS3.PC.Common.Check.dll
@@ -48,8 +47,9 @@ public class UploadController {
                 os = new FileOutputStream(destFile);
                 is = file.getInputStream();
                 byte buf[] = new byte[1024];
-                while (is.read(buf) > 0) {
-                    os.write(buf, 0, buf.length);
+                int inputLength = 0;
+                while ((inputLength = is.read(buf)) > 0) {
+                    os.write(buf, 0, inputLength);
                 }
                 os.flush();
                 os.close();
@@ -59,21 +59,21 @@ public class UploadController {
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-            response.setStatus(500 );
+            response.setStatus(500);
         } finally {
             if(is != null)
                 try{
                     is.close();
                 }
                 catch(IOException e){
-
+                    throw new RuntimeException(e);
                 }
             if(os != null)
                 try{
                     os.close();
                 }
                 catch(IOException e){
-
+                    throw new RuntimeException(e);
                 }
         }
     }
