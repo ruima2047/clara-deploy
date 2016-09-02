@@ -26,29 +26,35 @@
     <!-- JSR-303 support will be detected on classpath and enabled automatically -->
     <mvc:annotation-driven/>
 
-    <!--<mvc:interceptors>-->
-        <!--<mvc:interceptor>-->
-            <!--<mvc:mapping path="/**"/>-->
-            <!--&lt;!&ndash; Spring mvc 单点登录拦截器bean  &ndash;&gt;-->
-            <!--<bean id="springSSOInterceptor" class="com.jd.common.springmvc.interceptor.SpringSSOInterceptor"-->
-                  <!--init-method="initialize">-->
-                <!--<property name="appDomainName" value="${webapp.domain.name}"/>-->
-                <!--<property name="appHomeUrl" value="http://${webapp.domain.name}/"/>-->
-                <!--<property name="loginUrl" value="${login.address}"/>-->
-                <!--<property name="ssoDomainName" value="${sso.auth.cookie.domain}"/>-->
-                <!--<property name="excludePath" value="${sso.exclude.path}"/>-->
-                <!--<property name="ssoService" ref="ssoService"/>-->
-            <!--</bean>-->
-        <!--</mvc:interceptor>-->
-        <!--&lt;!&ndash;<mvc:interceptor>&ndash;&gt;-->
-            <!--&lt;!&ndash;<mvc:mapping path="/**"/>&ndash;&gt;-->
-            <!--&lt;!&ndash;&lt;!&ndash; Spring mvc 权限拦截器bean  &ndash;&gt;&ndash;&gt;-->
-            <!--&lt;!&ndash;<bean id="springAuthorizationInterceptor"&ndash;&gt;-->
-                  <!--&lt;!&ndash;class="com.jd.common.springmvc.interceptor.SpringAuthorizationInterceptor">&ndash;&gt;-->
-                <!--&lt;!&ndash;<property name="hrmPrivilegeHelper" ref="hrmPrivilegeHelper"/>&ndash;&gt;-->
-            <!--&lt;!&ndash;</bean>&ndash;&gt;-->
-        <!--&lt;!&ndash;</mvc:interceptor>&ndash;&gt;-->
-    <!--</mvc:interceptors>-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <!-- Spring mvc 单点登录拦截器bean  -->
+            <bean id="springSSOInterceptor" class="com.jd.common.springmvc.interceptor.SpringSSOInterceptor"
+                  init-method="initialize">
+                <property name="appDomainName" value="${webapp.domain.name}"/>
+                <property name="appHomeUrl" value="http://${webapp.domain.name}/"/>
+                <property name="loginUrl" value="${login.address}"/>
+                <property name="ssoDomainName" value="${sso.auth.cookie.domain}"/>
+                <property name="excludePath" value="${sso.exclude.path}"/>
+                <property name="ssoService" ref="ssoService"/>
+            </bean>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <!-- Spring mvc 权限拦截器bean  -->
+            <bean id="springAuthorizationInterceptor"
+                  class="com.jd.common.springmvc.interceptor.SpringAuthorizationInterceptor">
+                <property name="hrmPrivilegeHelper" ref="hrmPrivilegeHelper"/>
+            </bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <bean id="hrmPrivilegeHelper" class="com.jd.common.hrm.HrmPrivilegeHelper">
+        <property name="uimKey" value="${uim.key}"/>
+        <property name="uimToken" value="${uim.token}"/>
+        <property name="uimUrl" value="${uim.url}"/>
+    </bean>
 
     <!-- template view -->
     <bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">

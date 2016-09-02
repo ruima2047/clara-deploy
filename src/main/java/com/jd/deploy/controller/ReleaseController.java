@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
 import net.lingala.zip4j.model.ZipParameters;
 import net.lingala.zip4j.core.ZipFile;
 
@@ -48,7 +49,7 @@ public class ReleaseController {
     private BaseInfo baseInfo;
 
     @RequestMapping(value = "/release", method = RequestMethod.POST)
-    public void release(HttpServletRequest request,@RequestParam("warehouse[]") List<String> warehouseList,HttpServletResponse response) {
+    public void release(HttpServletRequest request, @RequestParam("warehouse[]") List<String> warehouseList, HttpServletResponse response) {
         try {
             //initialize settings
             releaseFileInfoList = new ArrayList<ReleaseFileInfo>();
@@ -77,7 +78,7 @@ public class ReleaseController {
                     }
                     versionNum = lineTxt;
                     while ((lineTxt = bufferedReader.readLine()) != null) {
-                        if(!StringUtils.isBlank(lineTxt)) {
+                        if (!StringUtils.isBlank(lineTxt)) {
                             updateLog += Integer.toString(i) + ". " + lineTxt + "\n";
                             i++;
                         }
@@ -144,48 +145,59 @@ public class ReleaseController {
 //                }
         }
     }
+
     /**
      * @return
      */
     public Boolean generateReleaseList(String newVersionNum, String updateLog) {
 
+        Document documentEle = DocumentHelper.createDocument();
+        Element autoUpdaterEle = documentEle.addElement("AutoUpdater");
+        Element appNameEle = autoUpdaterEle.addElement("AppName");
+        appNameEle.addText(baseInfo.getAppName());
+        Element releaseUrlEle = autoUpdaterEle.addElement("ReleaseURL");
+        releaseUrlEle.addText(baseInfo.getReleaseURL());
+        Element releaseDateEle = autoUpdaterEle.addElement("ReleaseDate");
+        releaseDateEle.addText(simpleDateFormat.format(new Date()));
+        Element releaseVersionEle = autoUpdaterEle.addElement("ReleaseVersion");
+        releaseVersionEle.addText(newVersionNum);
+        Element minVersionEle = autoUpdaterEle.addElement("MinVersion");
+        minVersionEle.addText(newVersionNum);
+        Element updateDesEle = autoUpdaterEle.addElement("UpdateDes");
+        updateDesEle.addText(updateLog);
+        Element applicationStartEle = autoUpdaterEle.addElement("ApplicationStart");
+        applicationStartEle.addText(baseInfo.getApplicationStart());
+        Element shortcutIconEle = autoUpdaterEle.addElement("ShortcutIcon");
+        shortcutIconEle.addText(baseInfo.getShortcutIcon());
+        Element releasesEle = autoUpdaterEle.addElement("Releases");
+        for (ReleaseFileInfo releaseFileInfo : releaseFileInfoList) {
+            Element fileEle = releasesEle.addElement("File");
+            fileEle.addAttribute("name", releaseFileInfo.getName());
+            fileEle.addAttribute("date", releaseFileInfo.getDate());
+            fileEle.addAttribute("size", releaseFileInfo.getSize());
+            fileEle.addAttribute("md5", releaseFileInfo.getMd5());
+        }
+        OutputFormat outputFormat = OutputFormat.createPrettyPrint();
+        outputFormat.setEncoding("UTF-8");
+        XMLWriter xmlWriter = null;
         try {
-            Document documentEle = DocumentHelper.createDocument();
-            Element autoUpdaterEle = documentEle.addElement("AutoUpdater");
-            Element appNameEle = autoUpdaterEle.addElement("AppName");
-            appNameEle.addText(baseInfo.getAppName());
-            Element releaseUrlEle = autoUpdaterEle.addElement("ReleaseURL");
-            releaseUrlEle.addText(baseInfo.getReleaseURL());
-            Element releaseDateEle = autoUpdaterEle.addElement("ReleaseDate");
-            releaseDateEle.addText(simpleDateFormat.format(new Date()));
-            Element releaseVersionEle = autoUpdaterEle.addElement("ReleaseVersion");
-            releaseVersionEle.addText(newVersionNum);
-            Element minVersionEle = autoUpdaterEle.addElement("MinVersion");
-            minVersionEle.addText(newVersionNum);
-            Element updateDesEle = autoUpdaterEle.addElement("UpdateDes");
-            updateDesEle.addText(updateLog);
-            Element applicationStartEle = autoUpdaterEle.addElement("ApplicationStart");
-            applicationStartEle.addText(baseInfo.getApplicationStart());
-            Element shortcutIconEle = autoUpdaterEle.addElement("ShortcutIcon");
-            shortcutIconEle.addText(baseInfo.getShortcutIcon());
-            Element releasesEle = autoUpdaterEle.addElement("Releases");
-            for (ReleaseFileInfo releaseFileInfo : releaseFileInfoList) {
-                Element fileEle = releasesEle.addElement("File");
-                fileEle.addAttribute("name", releaseFileInfo.getName());
-                fileEle.addAttribute("date", releaseFileInfo.getDate());
-                fileEle.addAttribute("size", releaseFileInfo.getSize());
-                fileEle.addAttribute("md5", releaseFileInfo.getMd5());
-            }
-            OutputFormat outputFormat = OutputFormat.createPrettyPrint();
-            outputFormat.setEncoding("UTF-8");
-            XMLWriter xmlWriter = new XMLWriter(
+            xmlWriter = new XMLWriter(
                     new FileOutputStream(PathUtil.getPath(baseInfo.getRootPath(), "ReleaseList.xml")), outputFormat);
 
             xmlWriter.write(documentEle);
+            xmlWriter.flush();
             xmlWriter.close();
         } catch (Exception e) {
             e.printStackTrace();
 
+        } finally {
+            if (xmlWriter != null) {
+                try {
+                    xmlWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return true;
     }
@@ -205,7 +217,7 @@ public class ReleaseController {
                 } else {
                     ReleaseFileInfo releaseFileInfo = new ReleaseFileInfo();
 //                    releaseFileInfo.setName(PathUtil.separatorUniform(relativePath).concat(file.getName()));
-                    releaseFileInfo.setName(relativePath.replace('/','\\').concat(file.getName()));
+                    releaseFileInfo.setName(relativePath.replace('/', '\\').concat(file.getName()));
                     //linux文件系统时间精度问题
                     releaseFileInfo.setDate(simpleDateFormat.format(new Date(file.lastModified() - 2000)));
                     releaseFileInfo.setSize(Long.toString(file.length() >> 10));
@@ -275,6 +287,7 @@ public class ReleaseController {
         }
         return value;
     }
+
     public Boolean packAndZip(File versionFile, File xmlFile) {
         try {
             ZipFile zipFile = new ZipFile(versionFilePath + ".zip");

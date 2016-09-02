@@ -37,44 +37,44 @@ public class UploadController {
                          HttpServletResponse response) {
         OutputStream os = null;
         InputStream is = null;
-        try {
-            for (String warehouse : warehouseList) {
-                BaseInfo baseInfo = (BaseInfo) baseInfoMap.get(warehouse);
-                //ex. E:\export\Update\guan\PC\Release\DLL\Check
-                String uploadPath = PathUtil.getPath(baseInfo.getRootPath(), "Release", "DLL", module);
-                //ex. E:\export\Update\guan\PC\Release\DLL\Check\JD.WMS3.PC.Common.Check.dll
-                File destFile = new File(PathUtil.getPath(uploadPath, file.getOriginalFilename()));
-                os = new FileOutputStream(destFile);
-                is = file.getInputStream();
-                byte buf[] = new byte[1024];
-                int inputLength = 0;
-                while ((inputLength = is.read(buf)) > 0) {
-                    os.write(buf, 0, inputLength);
-                }
-                os.flush();
-                os.close();
-                is.close();
-                logger.info("库房："+warehouse+" 用户："+userName+" 文件："+file.getOriginalFilename()+" 路径："+uploadPath);
-                response.setStatus(200);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            response.setStatus(500);
-        } finally {
-            if(is != null)
-                try{
-                    is.close();
-                }
-                catch(IOException e){
-                    throw new RuntimeException(e);
-                }
-            if(os != null)
-                try{
-                    os.close();
-                }
-                catch(IOException e){
-                    throw new RuntimeException(e);
-                }
-        }
+//        try {
+//            for (String warehouse : warehouseList) {
+//                BaseInfo baseInfo = (BaseInfo) baseInfoMap.get(warehouse);
+//                //ex. E:\export\Update\guan\PC\Release\DLL\Check
+//                String uploadPath = PathUtil.getPath(baseInfo.getRootPath(), "Release", "DLL", module);
+//                //ex. E:\export\Update\guan\PC\Release\DLL\Check\JD.WMS3.PC.Common.Check.dll
+//                File destFile = new File(PathUtil.getPath(uploadPath, file.getOriginalFilename()));
+//                os = new FileOutputStream(destFile);
+//                is = file.getInputStream();
+//                byte buf[] = new byte[1024];
+//                int inputLength = 0;
+//                while ((inputLength = is.read(buf)) > 0) {
+//                    os.write(buf, 0, inputLength);
+//                }
+//                os.flush();
+//                os.close();
+//                is.close();
+//                logger.info("库房："+warehouse+" 用户："+userName+" 文件："+file.getOriginalFilename()+" 路径："+uploadPath);
+//                response.setStatus(200);
+//            }
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//            response.setStatus(500);
+//        } finally {
+//            if(is != null)
+//                try{
+//                    is.close();
+//                }
+//                catch(IOException e){
+//                    throw new RuntimeException(e);
+//                }
+//            if(os != null)
+//                try{
+//                    os.close();
+//                }
+//                catch(IOException e){
+//                    throw new RuntimeException(e);
+//                }
+//        }
     }
 }

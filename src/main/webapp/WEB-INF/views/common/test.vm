@@ -12,7 +12,11 @@
     <link rel="stylesheet" href="#springUrl('')/uploadify/uploadify.css"/>
     <script src="#springUrl('')/uploadify/jquery.uploadify.min.js"></script>
     <style type="text/css">
-
+        #logout{
+            position: absolute;
+            right: 20px;
+            top: 20px;
+        }
     </style>
 
     <script>
@@ -22,6 +26,10 @@
 <body>
 <div class='container-fluid'>
     <h2 class='page-header'>客户端更新</h2>
+
+
+
+    <li id = "logout">$!{username}<a href="#logout"> 退出</a></li>
 
     <div class='tabbable tabs-left'>
 
@@ -35,12 +43,11 @@
             <li><a href="#release" data-toggle="tab">打包</a></li>
         </ul>
 
-
         <div id="myTabContent" class="tab-content">
             <div class="tab-pane fade in active" id="home">
                 <div class="jumbotron">
-                    <h1>欢迎！</h1>
-
+                    <h1>客户端更新</h1>
+                    <p>Hello $!{username}！</p>
                     <p>这里是教程。</p>
                     </p>
                 </div>
@@ -49,12 +56,12 @@
                 <div class="jumbotron"></div>
                 <form class="form-horizontal" role="form">
 
-                    <div class="form-group">
-                        <label for="userName" class="col-sm-2 control-label">用户名</label>
-                        <div class="col-sm-1">
-                            <input type="text" class="form-control" id="userName">
-                        </div>
-                    </div>
+##                    <div class="form-group">
+##                        <label for="userName" class="col-sm-2 control-label">用户名</label>
+##                        <div class="col-sm-1">
+##                            <input type="text" class="form-control" id="userName">
+##                        </div>
+##                    </div>
 
                     <div class="form-group">
                         <label for="module" class="col-sm-2 control-label">选择模块</label>
@@ -158,28 +165,32 @@
 </div>
 
 <script type="text/javascript">
+    uploadWarehouses = new Array();
+    releaseWarehouses = new Array();
+    module = new String();
+    userName = new String();
     function Release() {
 
-        var warehouse = new Array();
+        releaseWarehouses = new Array();
         if ($('#gzRelease').is(':checked')) {
-            warehouse.push('gz');
+            releaseWarehouses.push('gz');
         }
         if ($('#guanRelease').is(':checked')) {
-            warehouse.push('guan');
+            releaseWarehouses.push('guan');
         }
         if ($('#checkboxsh').is(':checked')) {
-            warehouse.push('sh');
+            releaseWarehouses.push('sh');
         }
         if ($('#szRelease').is(':checked')) {
-            warehouse.push('sz');
+            releaseWarehouses.push('sz');
         }
-        if (warehouse.length == 0) {
+        if (releaseWarehouses.length == 0) {
             alert("warehouse can't be null");
             return false;
         }
         $.post("/release",
                 {
-                    'warehouse': warehouse
+                    'warehouse': releaseWarehouses
                 },
                 function (response) {
                     if(response == "success")
@@ -195,30 +206,32 @@
 
     function UploadFile() {
         //校验
-        var userName = $('#userName').val();
-        if (userName.replace(/\s/g, '') == '') {
-            alert("username can't be null");
-            return false;
-        }
-        var module = $('#module').val();
+//        var userName = $('#userName').val();
+//        if (userName.replace(/\s/g, '') == '') {
+//            alert("username can't be null");
+//            return false;
+//        }
+
+        userName = document.getElementById("logout").nodeValue;
+
+        module = $('#module').val();
         if (module.replace(/\s/g, '') == '') {
             alert("module can't be null");
             return false;
         }
-        var warehouse = new Array();
         if ($('#checkboxgz').is(':checked')) {
-            warehouse.push('gz');
+            uploadWarehouses.push('gz');
         }
         if ($('#checkboxguan').is(':checked')) {
-            warehouse.push('guan');
+            uploadWarehouses.push('guan');
         }
         if ($('#checkboxsh').is(':checked')) {
-            warehouse.push('sh');
+            uploadWarehouses.push('sh');
         }
         if ($('#checkboxsz').is(':checked')) {
-            warehouse.push('sz');
+            uploadWarehouses.push('sz');
         }
-        if (warehouse.length == 0) {
+        if (uploadWarehouses.length == 0) {
             alert("warehouse can't be null");
             return false;
         }
@@ -229,7 +242,7 @@
         }
         $.post("/log",
                 {
-                    'warehouse': warehouse,
+                    'warehouse': uploadWarehouses,
                     'description': log
                 },
                 function (data, status) {
@@ -254,26 +267,10 @@
             'simUploadLimit': 10,
             'onUploadStart': function (file) {
 
-                var warehouse = new Array();
-
-                if ($('#checkboxgz').is(':checked')) {
-                    warehouse.push('gz');
-                }
-                if ($('#checkboxguan').is(':checked')) {
-                    warehouse.push('guan');
-                }
-                if ($('#checkboxsh').is(':checked')) {
-                    warehouse.push('sh');
-                }
-                if ($('#checkboxsz').is(':checked')) {
-                    warehouse.push('sz');
-                }
-
                 $("#fileupload").uploadify("settings", "formData", {
-                    'userName': $('#userName').val(),
-                    'log': $('#log').val(),
-                    'module': $('#module').val(),
-                    'warehouse': warehouse
+                    'userName': $('#logout').val(),
+                    'module':  $('#module').val(),
+                    'warehouse': uploadWarehouses
                 });
             },
             'onCancel': function (event, queueID, fileObj) {
