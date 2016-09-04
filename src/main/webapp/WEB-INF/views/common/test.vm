@@ -165,13 +165,12 @@
 </div>
 
 <script type="text/javascript">
-    uploadWarehouses = new Array();
-    releaseWarehouses = new Array();
-    module = new String();
-    userName = new String();
+    var uploadWarehouses = new Array();
+    var userName;
+    var moduleName;
     function Release() {
 
-        releaseWarehouses = new Array();
+        var releaseWarehouses = new Array();
         if ($('#gzRelease').is(':checked')) {
             releaseWarehouses.push('gz');
         }
@@ -200,7 +199,6 @@
                 });
 
 //        document.getElementById("description").submit()
-
     }
 
 
@@ -214,8 +212,8 @@
 
         userName = document.getElementById("logout").nodeValue;
 
-        module = $('#module').val();
-        if (module.replace(/\s/g, '') == '') {
+        moduleName = $('#module').val();
+        if (moduleName.replace(/\s/g, '') == '') {
             alert("module can't be null");
             return false;
         }
@@ -250,7 +248,7 @@
 
 //        document.getElementById("description").submit()
 
-        $("#fileupload").uploadify('upload', '*');
+       // $("#fileupload").uploadify('upload', '*');
     }
 
     $(function () {
@@ -266,10 +264,9 @@
             'queueSizeLimit': 10,
             'simUploadLimit': 10,
             'onUploadStart': function (file) {
-
                 $("#fileupload").uploadify("settings", "formData", {
-                    'userName': $('#logout').val(),
-                    'module':  $('#module').val(),
+                    'userName': userName,
+                    'module':  moduleName,
                     'warehouse': uploadWarehouses
                 });
             },
@@ -281,7 +278,7 @@
                 if (!response) {
                     alert("failed");
                 }
-            },
+            }
             //上传错误
 //            'onUploadError': function (file, errorCode, errorMsg, errorString) {
 //                alert("failed");
