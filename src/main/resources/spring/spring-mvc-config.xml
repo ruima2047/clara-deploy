@@ -41,20 +41,34 @@
             </bean>
         </mvc:interceptor>
         <mvc:interceptor>
-            <mvc:mapping path="/**"/>
-            <!-- Spring mvc 权限拦截器bean  -->
-            <bean id="springAuthorizationInterceptor"
-                  class="com.jd.common.springmvc.interceptor.SpringAuthorizationInterceptor">
-                <property name="hrmPrivilegeHelper" ref="hrmPrivilegeHelper"/>
+            <mvc:mapping path="/logout" />
+            <bean class="com.jd.josl.privilege.sdk4app.security.ext.LogoutInterceptor">
+                <property name="cookies">
+                    <array>
+                        <bean class="javax.servlet.http.Cookie">
+                            <constructor-arg index="0" value="${webapp.domain.name}"></constructor-arg>
+                            <constructor-arg index="1" value=""></constructor-arg>
+                            <property name="domain" value="${webapp.domain.name}"/>
+                        </bean>
+                    </array>
+                </property>
             </bean>
         </mvc:interceptor>
+        <!--<mvc:interceptor>-->
+            <!--<mvc:mapping path="/**"/>-->
+            <!--&lt;!&ndash; Spring mvc 权限拦 截器bean  &ndash;&gt;-->
+            <!--<bean id="springAuthorizationInterceptor"-->
+                  <!--class="com.jd.common.springmvc.interceptor.SpringAuthorizationInterceptor">-->
+                <!--<property name="hrmPrivilegeHelper" ref="hrmPrivilegeHelper"/>-->
+            <!--</bean>-->
+        <!--</mvc:interceptor>-->
     </mvc:interceptors>
 
-    <bean id="hrmPrivilegeHelper" class="com.jd.common.hrm.HrmPrivilegeHelper">
-        <property name="uimKey" value="${uim.key}"/>
-        <property name="uimToken" value="${uim.token}"/>
-        <property name="uimUrl" value="${uim.url}"/>
-    </bean>
+    <!--<bean id="hrmPrivilegeHelper" class="com.jd.common.hrm.HrmPrivilegeHelper">-->
+        <!--<property name="uimKey" value="${uim.key}"/>-->
+        <!--<property name="uimToken" value="${uim.token}"/>-->
+        <!--<property name="uimUrl" value="${uim.url}"/>-->
+    <!--</bean>-->
 
     <!-- template view -->
     <bean id="velocityConfig" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">

@@ -51,80 +51,79 @@ public class ReleaseController {
     @RequestMapping(value = "/release", method = RequestMethod.POST)
     public void release(HttpServletRequest request, @RequestParam("warehouse[]") List<String> warehouseList, HttpServletResponse response) {
         try {
-            //initialize settings
-            releaseFileInfoList = new ArrayList<ReleaseFileInfo>();
             simpleDateFormat = new SimpleDateFormat("yyyy/M/d H:mm:ss");
-
-            for (String warehouse : warehouseList) {
-                baseInfo = (BaseInfo) baseInfoMap.get(warehouse);
-                //ex. E:\export\Update\gz\PC\Release
-                File releaseFile = new File(PathUtil.getPath(baseInfo.getRootPath(), "Release"));
-                updateLogPath = PathUtil.getPath(baseInfo.getRootPath(), "VersionInfo", "versionInfo");
-
-                //get the new version number and update description
-                File updateLogFile = new File(updateLogPath);
-                if (!updateLogFile.exists()) {
-                    throw new RuntimeException("读取更新内容失败");
-                }
-                BufferedReader bufferedReader = null;
-                String versionNum = "";
-                String updateLog = "";
-                try {
-                    bufferedReader = new BufferedReader(new FileReader(updateLogFile));
-                    String lineTxt = null;
-                    int i = 1;
-                    if ((lineTxt = bufferedReader.readLine()) == null) {
-                        throw new RuntimeException("获取版本号失败");
-                    }
-                    versionNum = lineTxt;
-                    while ((lineTxt = bufferedReader.readLine()) != null) {
-                        if (!StringUtils.isBlank(lineTxt)) {
-                            updateLog += Integer.toString(i) + ". " + lineTxt + "\n";
-                            i++;
-                        }
-                    }
-                } catch (Exception e) {
-
-                } finally {
-                    if (bufferedReader != null) {
-                        try {
-                            bufferedReader.close();
-                        } catch (IOException e1) {
-                        }
-                    }
-                }
-
-                //create an empty folder named version
-                versionFilePath = PathUtil.getPath(baseInfo.getRootPath(), versionNum);
-                File versionFile = new File(versionFilePath);
-                if (!versionFile.exists()) {
-                    if (!versionFile.mkdir())
-                        throw new RuntimeException(new Exception());
-                }
-
-                //copy files to version folder and get all files' information
-                generateFileList(releaseFile, "");
-
-                //generate Release.xml
-                generateReleaseList(versionNum, updateLog);
-
-                //zip Release.xml and version folder
-                packAndZip(versionFile, new File(PathUtil.getPath(baseInfo.getRootPath(), "ReleaseList.xml")));
-
-                //update updateLog
-                File appendVersion = new File(updateLogPath.concat("_").concat(versionNum));
-                updateLogFile.renameTo(appendVersion);
-                FileWriter fw = new FileWriter(updateLogPath);
-                BufferedWriter bw = new BufferedWriter(fw);
-                bw.write(updateVersionNum(versionNum));
-                bw.close();
-                fw.close();
-
-            }
-            response.setStatus(200);
-            PrintWriter pw = response.getWriter();
-            pw.write("success");
-            System.out.println("it's a test");
+//            for (String warehouse : warehouseList) {
+//                //initialize settings
+//                releaseFileInfoList = new ArrayList<ReleaseFileInfo>();
+//                baseInfo = (BaseInfo) baseInfoMap.get(warehouse);
+//                //ex. E:\export\Update\gz\PC\Release
+//                File releaseFile = new File(PathUtil.getPath(baseInfo.getRootPath(), "Release"));
+//                updateLogPath = PathUtil.getPath(baseInfo.getRootPath(), "VersionInfo", "versionInfo");
+//
+//                //get the new version number and update description
+//                File updateLogFile = new File(updateLogPath);
+//                if (!updateLogFile.exists()) {
+//                    throw new RuntimeException("读取更新内容失败");
+//                }
+//                BufferedReader bufferedReader = null;
+//                String versionNum = "";
+//                String updateLog = "";
+//                try {
+//                    bufferedReader = new BufferedReader(new FileReader(updateLogFile));
+//                    String lineTxt = null;
+//                    int i = 1;
+//                    if ((lineTxt = bufferedReader.readLine()) == null) {
+//                        throw new RuntimeException("获取版本号失败");
+//                    }
+//                    versionNum = lineTxt;
+//                    while ((lineTxt = bufferedReader.readLine()) != null) {
+//                        if (!StringUtils.isBlank(lineTxt)) {
+//                            updateLog += Integer.toString(i) + ". " + lineTxt + "\n";
+//                            i++;
+//                        }
+//                    }
+//                } catch (Exception e) {
+//
+//                } finally {
+//                    if (bufferedReader != null) {
+//                        try {
+//                            bufferedReader.close();
+//                        } catch (IOException e1) {
+//                        }
+//                    }
+//                }
+//
+//                //create an empty folder named version
+//                versionFilePath = PathUtil.getPath(baseInfo.getRootPath(), versionNum);
+//                File versionFile = new File(versionFilePath);
+//                if (!versionFile.exists()) {
+//                    if (!versionFile.mkdir())
+//                        throw new RuntimeException(new Exception());
+//                }
+//
+//                //copy files to version folder and get all files' information
+//                generateFileList(releaseFile, "");
+//
+//                //generate Release.xml
+//                generateReleaseList(versionNum, updateLog);
+//
+//                //zip Release.xml and version folder
+//                packAndZip(versionFile, new File(PathUtil.getPath(baseInfo.getRootPath(), "ReleaseList.xml")));
+//
+//                //update updateLog
+//                File appendVersion = new File(updateLogPath.concat("_").concat(versionNum));
+//                updateLogFile.renameTo(appendVersion);
+//                FileWriter fw = new FileWriter(updateLogPath);
+//                BufferedWriter bw = new BufferedWriter(fw);
+//                bw.write(updateVersionNum(versionNum));
+//                bw.close();
+//                fw.close();
+//
+//            }
+//            response.setStatus(200);
+//            PrintWriter pw = response.getWriter();
+//            pw.write("success");
+//            System.out.println("it's a test");
         } catch (Exception e) {
             e.printStackTrace();
 

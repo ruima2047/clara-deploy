@@ -4,9 +4,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 
 @Controller
-@RequestMapping("/")
 public class DefaultController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(HttpServletRequest request, Model view) {
@@ -26,5 +27,19 @@ public class DefaultController {
 
         view.addAttribute("username", username);
         return "/common/test";
+    }
+
+    @RequestMapping(value = "logout", method = RequestMethod.POST)
+    @ResponseBody
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+//        return "http://test.ssa.jd.com/sso/logout?ReturnUrl=http://clara.deploy.jd.net";
+//        try {
+//            PrintWriter pw = response.getWriter();
+//            pw.write("http://test.ssa.jd.com/sso/logout?ReturnUrl=http://clara.deploy.jd.net");
+//        }
+//        catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        return "http://test.ssa.jd.com/sso/logout?ReturnUrl=http://clara.deploy.jd.net";
     }
 }

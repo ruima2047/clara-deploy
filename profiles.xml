@@ -33,14 +33,14 @@
 
                 <clara.deploy.traceLogPath>E:\\export\\Update\\Logs</clara.deploy.traceLogPath>
 
-                <webapp.domain.name>127.0.0.1:8081</webapp.domain.name>
+                <webapp.domain.name>clara.deploy.jd.net</webapp.domain.name>
                 <!--单点登录地址http://ssa.jd.com/sso/login-->
                 <!--http://test.ssa.jd.com/sso/login-->
                 <login.address>http://test.ssa.jd.com/sso/login</login.address>
                 <!--单点登录登出地址-->
-                <loginout.address>http://test.ssa.jd.com/sso/logout?ReturnUrl=http%3A%2F%2F127.0.0.1:8081</loginout.address>
+                <loginout.address>http://test.ssa.jd.com/sso/logout?ReturnUrl=http%3A%2F%2Fclara.deploy.jd.net</loginout.address>
                 <!--应用的域，常见值为.jd.com或.360buy.com-->
-                <sso.auth.cookie.domain>.jd.com</sso.auth.cookie.domain>
+                <sso.auth.cookie.domain>.jd.net</sso.auth.cookie.domain>
                 <!--不需要登录可以访问的路径-->
                 <sso.exclude.path>/hi</sso.exclude.path>
 

@@ -27,8 +27,6 @@
 <div class='container-fluid'>
     <h2 class='page-header'>客户端更新</h2>
 
-
-
     <li id = "logout">$!{username}<a href="#logout"> 退出</a></li>
 
     <div class='tabbable tabs-left'>
@@ -178,7 +176,7 @@
         if ($('#guanRelease').is(':checked')) {
             releaseWarehouses.push('guan');
         }
-        if ($('#checkboxsh').is(':checked')) {
+        if ($('#shRelease').is(':checked')) {
             releaseWarehouses.push('sh');
         }
         if ($('#szRelease').is(':checked')) {
@@ -206,14 +204,7 @@
 
     function UploadFile() {
         //校验
-//        var userName = $('#userName').val();
-//        if (userName.replace(/\s/g, '') == '') {
-//            alert("username can't be null");
-//            return false;
-//        }
-
         userName = document.getElementById("logout").nodeValue;
-
         module = $('#module').val();
         if (module.replace(/\s/g, '') == '') {
             alert("module can't be null");
@@ -286,6 +277,27 @@
 //            'onUploadError': function (file, errorCode, errorMsg, errorString) {
 //                alert("failed");
 //            }
+        });
+    });
+
+
+    $(document).ready(function() {
+        $("#logout").click(function() {
+            var param="param="+(new Date()).getMilliseconds();
+            jQuery.ajax({
+                type:'post',//可选get
+                url:"#springUrl('/logout')",
+                data:param,
+                dataType:'text',
+                cache:false,
+                success:function(msg){
+                    if(msg=='success'){
+                        parent.location.reload();
+                    }else {
+                        parent.location = msg;
+                    }
+                }
+            })
         });
     });
 
