@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,7 +25,7 @@ public class DefaultController {
         System.out.println("hello");
 
         view.addAttribute("username", username);
-        return "/common/test";
+        return "common/default";
     }
 
     @RequestMapping(value = "logout", method = RequestMethod.POST)
