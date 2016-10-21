@@ -21,10 +21,10 @@ import javax.servlet.http.HttpServletResponse;
 public class DefaultController {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String home(HttpServletRequest request, Model view) {
-        String username = com.jd.common.web.LoginContext.getLoginContext().getNick();
+        //String username = com.jd.common.web.LoginContext.getLoginContext().getNick();
         System.out.println("hello");
 
-        view.addAttribute("username", username);
+        //view.addAttribute("username", username);
         return "common/default";
     }
 

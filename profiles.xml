@@ -89,17 +89,26 @@
                 <sz.clara.deploy.ReleasePath>/export/Update/sz/PC</sz.clara.deploy.ReleasePath>
 
                 <clara.deploy.traceLogPath>/export/Update/Logs</clara.deploy.traceLogPath>
-
-                <webapp.domain.name>staig.jd.com</webapp.domain.name>
+                <webapp.domain.name>192.168.194.142:8019</webapp.domain.name>
+                <!--<webapp.domain.name>clara.deploy.jd.net</webapp.domain.name>-->
                 <!--单点登录地址http://ssa.jd.com/sso/login-->
                 <!--http://test.ssa.jd.com/sso/login-->
                 <login.address>http://test.ssa.jd.com/sso/login</login.address>
                 <!--单点登录登出地址-->
                 <loginout.address>http://test.ssa.jd.com/sso/logout?ReturnUrl=http%3A%2F%2F${webapp.domain.name}</loginout.address>
                 <!--应用的域，常见值为.jd.com或.360buy.com-->
-                <sso.auth.cookie.domain>.jd.com</sso.auth.cookie.domain>
+                <sso.auth.cookie.domain>.jd.net</sso.auth.cookie.domain>
                 <!--不需要登录可以访问的路径-->
                 <sso.exclude.path>/hi</sso.exclude.path>
+
+                <uim.key>258a7d0b59784c1f94c85e61ff44b9ec</uim.key>
+                <!--UIM中注册的token，需要权限拦截时配置-->
+                <!--线上28a4a23c24cf4a0a89a848343875771d-->
+                <!--测试24bcf83a732f48c0b975148ed3965f97-->
+                <uim.token>24bcf83a732f48c0b975148ed3965f97</uim.token>
+                <!--uim的接口地址，线上环境为:http://uim.jd.local/opaauth/router/rest，需要权限拦截时配置-->
+                <!--c测试http://test.uim.jd.com/opaauth/router/rest-->
+                <uim.url>http://test.uim.jd.com/opaauth/router/rest</uim.url>
 
             </properties>
             <activation>

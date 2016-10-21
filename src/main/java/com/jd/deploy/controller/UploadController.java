@@ -24,7 +24,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/upload")
 public class UploadController {
-    private final Logger logger = Logger.getLogger(getClass());
+    //private final Logger logger = Logger.getLogger(getClass());
     @Resource
     private HashMap baseInfoMap;
 
@@ -54,7 +54,7 @@ public class UploadController {
                 os.flush();
                 os.close();
                 is.close();
-                logger.info("库房："+warehouse+" 用户："+userName+" 文件："+file.getOriginalFilename()+" 路径："+uploadPath);
+                //logger.info("库房："+warehouse+" 用户："+userName+" 文件："+file.getOriginalFilename()+" 路径："+uploadPath);
                 response.setStatus(200);
             }
         } catch (Exception ex) {
