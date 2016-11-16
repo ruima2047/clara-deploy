@@ -222,7 +222,7 @@ public class ReleaseController {
                     releaseFileInfo.setSize(Long.toString(file.length() >> 10));
                     releaseFileInfo.setMd5(getMd5ByFile(file));
                     releaseFileInfoList.add(releaseFileInfo);
-                    copyFileToDirectory(file, PathUtil.getPath(versionFilePath, relativePath));
+                    //copyFileToDirectory(file, PathUtil.getPath(versionFilePath, relativePath));
                 }
             }
         } catch (Exception e) {
