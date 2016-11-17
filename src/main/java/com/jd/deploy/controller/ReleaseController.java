@@ -9,8 +9,6 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.io.OutputFormat;
 import org.dom4j.io.XMLWriter;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -29,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import net.lingala.zip4j.model.ZipParameters;
 import net.lingala.zip4j.core.ZipFile;
@@ -95,20 +95,21 @@ public class ReleaseController {
 
                 //create an empty folder named version
                 versionFilePath = PathUtil.getPath(baseInfo.getRootPath(), versionNum);
-                File versionFile = new File(versionFilePath);
-                if (!versionFile.exists()) {
-                    if (!versionFile.mkdir())
-                        throw new RuntimeException(new Exception());
-                }
+//                File versionFile = new File(versionFilePath);
+//                if (!versionFile.exists()) {
+//                    if (!versionFile.mkdir())
+//                        throw new RuntimeException(new Exception());
+//                }
 
-                //copy files to version folder and get all files' information
+                //get all files' information
                 generateFileList(releaseFile, "");
 
                 //generate Release.xml
                 generateReleaseList(versionNum, updateLog);
 
                 //zip Release.xml and version folder
-                packAndZip(versionFile, new File(PathUtil.getPath(baseInfo.getRootPath(), "ReleaseList.xml")));
+                //packAndZip(versionFile, new File(PathUtil.getPath(baseInfo.getRootPath(), "ReleaseList.xml")));
+                zipIt(warehouse, versionNum);
 
                 //update updateLog
                 File appendVersion = new File(updateLogPath.concat("_").concat(versionNum));
@@ -287,16 +288,16 @@ public class ReleaseController {
         return value;
     }
 
-    public Boolean packAndZip(File versionFile, File xmlFile) {
-        try {
-            ZipFile zipFile = new ZipFile(versionFilePath + ".zip");
-            zipFile.createZipFileFromFolder(versionFile, new ZipParameters(), false, 0);
-            zipFile.addFile(xmlFile, new ZipParameters());
-        } catch (Exception e) {
-
-        }
-        return true;
-    }
+//    public Boolean packAndZip(File versionFile, File xmlFile) {
+//        try {
+//            ZipFile zipFile = new ZipFile(versionFilePath + ".zip");
+//            zipFile.createZipFileFromFolder(versionFile, new ZipParameters(), false, 0);
+//            zipFile.addFile(xmlFile, new ZipParameters());
+//        } catch (Exception e) {
+//
+//        }
+//        return true;
+//    }
 
     /**
      * update properties file
@@ -357,6 +358,50 @@ public class ReleaseController {
             return "1" + newVersion;
         } else {
             return newVersion.substring(1, newVersion.length());
+        }
+    }
+
+    /**
+     * Zip it
+     */
+    public void zipIt (String wareHouse, String versionNum) throws Exception{
+
+        byte[] buffer = new byte[1024];
+
+        try{
+
+            FileOutputStream fos = new FileOutputStream(baseInfo.getRootPath()+ File.separator + wareHouse+versionNum+".zip");
+            ZipOutputStream zos = new ZipOutputStream(fos);
+
+            System.out.println("Output to Zip : " + versionNum);
+
+            for(ReleaseFileInfo releaseFileInfo : this.releaseFileInfoList){
+
+                ZipEntry ze= new ZipEntry(versionNum + File.separator + releaseFileInfo.getName());
+                zos.putNextEntry(ze);
+                FileInputStream in = new FileInputStream(baseInfo.getRootPath()+ File.separator + "Release" + File.separator + releaseFileInfo.getName());
+                int len;
+                while ((len = in.read(buffer)) > 0) {
+                    zos.write(buffer, 0, len);
+                }
+                ze.setTime(simpleDateFormat.parse(releaseFileInfo.getDate()).getTime() + 2000);
+                in.close();
+            }
+            ZipEntry ze= new ZipEntry("ReleaseList.xml");
+            zos.putNextEntry(ze);
+            FileInputStream in = new FileInputStream(baseInfo.getRootPath()+ File.separator + "ReleaseList.xml");
+            int len;
+            while ((len = in.read(buffer)) > 0) {
+                zos.write(buffer, 0, len);
+            }
+            in.close();
+            zos.closeEntry();
+            //remember close it
+            zos.close();
+
+            System.out.println("Done");
+        }catch(IOException ex){
+            ex.printStackTrace();
         }
     }
 }
