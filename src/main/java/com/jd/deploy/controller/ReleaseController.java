@@ -18,8 +18,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.math.BigInteger;
-import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.security.MessageDigest;
 import java.text.SimpleDateFormat;
@@ -30,8 +28,8 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import net.lingala.zip4j.model.ZipParameters;
-import net.lingala.zip4j.core.ZipFile;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.IOUtils;
 
 /**
  * Created by marui5 on 2016/8/17.
@@ -70,7 +68,7 @@ public class ReleaseController {
                 String updateLog = "";
                 try {
                     bufferedReader = new BufferedReader(new FileReader(updateLogFile));
-                    String lineTxt = null;
+                    String lineTxt;
                     int i = 1;
                     if ((lineTxt = bufferedReader.readLine()) == null) {
                         throw new RuntimeException("获取版本号失败");
@@ -83,18 +81,19 @@ public class ReleaseController {
                         }
                     }
                 } catch (Exception e) {
-
+                    throw new RuntimeException("获取版本号失败");
                 } finally {
                     if (bufferedReader != null) {
                         try {
                             bufferedReader.close();
                         } catch (IOException e1) {
+                            e1.printStackTrace();
                         }
                     }
                 }
 
                 //create an empty folder named version
-                versionFilePath = PathUtil.getPath(baseInfo.getRootPath(), versionNum);
+//                versionFilePath = PathUtil.getPath(baseInfo.getRootPath(), versionNum);
 //                File versionFile = new File(versionFilePath);
 //                if (!versionFile.exists()) {
 //                    if (!versionFile.mkdir())
@@ -108,7 +107,6 @@ public class ReleaseController {
                 generateReleaseList(versionNum, updateLog);
 
                 //zip Release.xml and version folder
-                //packAndZip(versionFile, new File(PathUtil.getPath(baseInfo.getRootPath(), "ReleaseList.xml")));
                 zipIt(warehouse, versionNum);
 
                 //update updateLog
@@ -129,7 +127,7 @@ public class ReleaseController {
             e.printStackTrace();
 
         } finally {
-//            if(is != null)
+//            if(bw != null)
 //                try{
 //                    is.close();
 //                }
@@ -223,7 +221,6 @@ public class ReleaseController {
                     releaseFileInfo.setSize(Long.toString(file.length() >> 10));
                     releaseFileInfo.setMd5(getMd5ByFile(file));
                     releaseFileInfoList.add(releaseFileInfo);
-                    //copyFileToDirectory(file, PathUtil.getPath(versionFilePath, relativePath));
                 }
             }
         } catch (Exception e) {
@@ -267,6 +264,7 @@ public class ReleaseController {
 
     }
 
+
     /**
      * get md5 of a file
      *
@@ -275,18 +273,55 @@ public class ReleaseController {
      */
     public static String getMd5ByFile(File file) {
         String value = null;
+        FileInputStream in = null;
         try {
-            FileInputStream in = new FileInputStream(file);
-            MappedByteBuffer byteBuffer = in.getChannel().map(FileChannel.MapMode.READ_ONLY, 0, file.length());
-            MessageDigest md5 = MessageDigest.getInstance("MD5");
-            md5.update(byteBuffer);
-            BigInteger bi = new BigInteger(1, md5.digest());
-            value = String.format("%032X", bi);
+            in = new FileInputStream(file);
+            value = DigestUtils.md5Hex(IOUtils.toByteArray(in)).toUpperCase();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if(in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return value;
     }
+
+//    /**
+//     * get md5 of a file
+//     *
+//     * @param file
+//     * @return
+//     */
+//    public static String getMd5ByFile(File file) {
+//        String value = null;
+//        FileInputStream in = null;
+//        try {
+//            in = new FileInputStream(file);
+//            FileChannel fc = in.getChannel();
+//            MappedByteBuffer byteBuffer = fc.map(FileChannel.MapMode.READ_ONLY, 0, file.length());
+//            MessageDigest md5 = MessageDigest.getInstance("MD5");
+//            md5.update(byteBuffer);
+//            BigInteger bi = new BigInteger(1, md5.digest());
+//            value = String.format("%032X", bi);
+//            fc.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            if(in != null) {
+//                try {
+//                    in.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+//        return value;
+//    }
 
 //    public Boolean packAndZip(File versionFile, File xmlFile) {
 //        try {
@@ -377,7 +412,7 @@ public class ReleaseController {
 
             for(ReleaseFileInfo releaseFileInfo : this.releaseFileInfoList){
 
-                ZipEntry ze= new ZipEntry(versionNum + File.separator + releaseFileInfo.getName());
+                ZipEntry ze= new ZipEntry(PathUtil.getPath(versionNum, releaseFileInfo.getName()));
                 zos.putNextEntry(ze);
                 FileInputStream in = new FileInputStream(baseInfo.getRootPath()+ File.separator + "Release" + File.separator + releaseFileInfo.getName());
                 int len;
@@ -398,7 +433,7 @@ public class ReleaseController {
             zos.closeEntry();
             //remember close it
             zos.close();
-
+            fos.close();
             System.out.println("Done");
         }catch(IOException ex){
             ex.printStackTrace();
