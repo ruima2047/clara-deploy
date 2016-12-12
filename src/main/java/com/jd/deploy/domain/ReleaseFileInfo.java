@@ -13,6 +13,8 @@ public class ReleaseFileInfo {
     public String size;
     public String md5;
 
+    public String zipInfo;
+
     public String getName() {
         return name;
     }
@@ -43,5 +45,13 @@ public class ReleaseFileInfo {
 
     public void setMd5(String md5) {
         this.md5 = md5;
+    }
+
+    public String getZipInfo() {
+        return zipInfo;
+    }
+
+    public void setZipInfo(String zipInfo) {
+        this.zipInfo = zipInfo;
     }
 }

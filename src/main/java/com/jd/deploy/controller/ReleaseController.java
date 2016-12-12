@@ -41,6 +41,7 @@ public class ReleaseController {
     @Resource
     private HashMap baseInfoMap;
     private List<ReleaseFileInfo> releaseFileInfoList;
+    private List<String> zipInfoList;
     private SimpleDateFormat simpleDateFormat;
     private String versionFilePath;
     private String updateLogPath;
@@ -53,6 +54,7 @@ public class ReleaseController {
             for (String warehouse : warehouseList) {
                 //initialize settings
                 releaseFileInfoList = new ArrayList<ReleaseFileInfo>();
+                zipInfoList = new ArrayList<String>();
                 baseInfo = (BaseInfo) baseInfoMap.get(warehouse);
                 //ex. E:\export\Update\gz\PC\Release
                 File releaseFile = new File(PathUtil.getPath(baseInfo.getRootPath(), "Release"));
@@ -216,11 +218,13 @@ public class ReleaseController {
                     ReleaseFileInfo releaseFileInfo = new ReleaseFileInfo();
 //                    releaseFileInfo.setName(PathUtil.separatorUniform(relativePath).concat(file.getName()));
                     releaseFileInfo.setName(relativePath.replace('/', '\\').concat(file.getName()));
+                    releaseFileInfo.setZipInfo(relativePath.concat(file.getName()));
                     //linux文件系统时间精度问题
                     releaseFileInfo.setDate(simpleDateFormat.format(new Date(file.lastModified() - 2000)));
                     releaseFileInfo.setSize(Long.toString(file.length() >> 10));
                     releaseFileInfo.setMd5(getMd5ByFile(file));
                     releaseFileInfoList.add(releaseFileInfo);
+
                 }
             }
         } catch (Exception e) {
@@ -412,9 +416,9 @@ public class ReleaseController {
 
             for(ReleaseFileInfo releaseFileInfo : this.releaseFileInfoList){
 
-                ZipEntry ze= new ZipEntry(PathUtil.getPath(versionNum, releaseFileInfo.getName()));
+                ZipEntry ze= new ZipEntry(PathUtil.getPath(versionNum, releaseFileInfo.getZipInfo()));
                 zos.putNextEntry(ze);
-                FileInputStream in = new FileInputStream(baseInfo.getRootPath()+ File.separator + "Release" + File.separator + releaseFileInfo.getName());
+                FileInputStream in = new FileInputStream(baseInfo.getRootPath()+ File.separator + "Release" + File.separator + releaseFileInfo.getZipInfo());
                 int len;
                 while ((len = in.read(buffer)) > 0) {
                     zos.write(buffer, 0, len);
